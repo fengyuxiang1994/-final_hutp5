@@ -1,0 +1,46 @@
+﻿{include file="public/header" /}
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 商家中心 <span class="c-gray en">&gt;</span> 商家管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+	<div class="mt-20">
+	<table class="table table-border table-bordered table-hover table-bg table-sort">
+		<thead>
+			<tr class="text-c">
+				<th width="25"><input type="checkbox" name="" value=""></th>
+				<th width="80">ID</th>
+				<th width="100">商户名称</th>
+				<th width="100">法人</th>
+				<th width="150">联系电话</th>
+				<th width="150">申请时间</th>
+				<th width="60">状态</th>
+				<th width="100">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			{volist name="bas" id="vo"}
+			<tr class="text-c">
+				<td><input type="checkbox" value="1" name=""></td>
+				<td>{$vo.id}</td>
+				<td>{$vo.name}</td>
+				<td>{$vo.faren}</td>
+				<td>{$vo.faren_tel}</td>
+				<td>{$vo.create_time|date="Y-m-d H:i",###}</td> 
+				<td class="td-status">{$vo.status|status}</td>
+				<td class="td-manage">
+					<a title="查看商户详情" href="javascript:;" onclick="h_edit_s('查看商户详情','{:url('bas/detil',['id'=>$vo.id])}','')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> 
+				</td>
+			</tr>
+			{/volist}
+		</tbody>
+	</table>
+	</div>
+	{:paginate($bas)}
+</div>
+{include file="public/footer" /}
+</body>
+<script type="text/javascript">
+	var SCOPE = {
+		'listorder_url' : "{:url('category/listorder')}",
+	}
+</script>
+</html>

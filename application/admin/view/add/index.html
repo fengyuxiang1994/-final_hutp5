@@ -1,0 +1,89 @@
+﻿{include file="public/header" /}
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 主页内容中心 <span class="c-gray en">&gt;</span> 主页内容管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> 
+		<span class="l">
+			<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
+				<i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
+			 <a href="javascript:;" onclick="h_add_s('主页内容新增','{:url('home/add')}','')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 主页内容新增</a>
+		</span> 
+		<span class="r"><strong></strong></span> 
+	</div>
+	<div class="mt-20">
+	<table class="table table-border table-bordered table-hover table-bg table-sort">
+		<thead>
+			<tr class="text-c">
+				<th width="25"><input type="checkbox" name="" value=""></th>
+				<th width="80">ID</th>
+				<th width="100">昵称</th>
+				<th width="100">头像</th>
+				<th width="100">图像</th>
+				<th width="150">内容</th>
+				<th width="150">点赞数</th>
+				<th width="60">收藏数</th>
+				<th width="60">评论数</th>
+				<th width="100">用户发布ID</th>
+				<th width="100">顶级</th>
+				<th width="100">城市</th>
+				<th width="100">话题ID</th>
+				<th width="100">详情地址</th>
+				<th width="100">详情名称</th>
+				<th width="100">发布时间</th>
+				<th width="100">状态</th>
+				<th width="100">操作</th>
+
+			</tr>
+		</thead>
+		<tbody>
+			{volist name="add" id="vo"}
+			<tr class="text-c">
+				<td><input type="checkbox" value="1" name=""></td>
+				<td>{$vo.id}</td>
+				<td>{$vo.home_uaer_name}</td>
+				<td><img style="height: 40px; width: 40px; border-radius:50%;" src="{$vo.r_image}"/></td>
+				<td>			
+					{volist name="vo.image" id="vo2"}
+					<img style="height: 80px; width: 80px; " src="{$vo2}"/></td>
+					{/volist}
+				</td>
+				<td>{$vo.description}</td>
+
+
+				<td>{$vo.user_praise}</td>
+				<td>{$vo.user_collection}</td>
+				<td>{$vo.user_comment}</td>
+
+
+				<td>{$vo.user_id}</td>
+
+
+				<td>{$vo.category_id}</td>
+				<td>{$vo.city}</td>
+
+
+				<td>{$vo.topic}</td>
+
+
+				<td>{$vo.address}</td>
+				<td>{$vo.addressname}</td>
+
+
+				<td>{$vo.create_time|date="Y-m-d H:i", ###}</td>
+				<td class="td-status"><a href="{:url('add/status',['id'=>$vo.id , 'status'=>$vo.status==1?0:1])}" title="点击修改状态">{$vo.status|status}</a></td>
+				<td class="td-manage">
+					<!-- <a style="text-decoration:none" onClick="member_stop(this,'10001')" href="javascript:;" title="获取子栏目"><i class="Hui-iconfont">&#xe631;</i></a>  -->
+					<a title="编辑" href="javascript:;" onclick="h_edit('编辑','{:url('add/edit',['id'=>$vo.id])}','','','270')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> 
+					<!-- <a style="text-decoration:none" class="ml-5" onClick="change_password('修改密码','change-password.html','10001','600','270')" href="javascript:;" title="修改密码"><i class="Hui-iconfont">&#xe63f;</i></a>  -->
+					<a title="删除" href="javascript:;" onclick="h_del('{:url('add/status',['id'=>$vo.id , 'status'=>-1])}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
+				</td>
+			</tr>
+			{/volist}
+		</tbody>
+	</table>
+	</div>
+	{:paginate($add)}
+</div>
+{include file="public/footer" /}
+</body>
+</html>

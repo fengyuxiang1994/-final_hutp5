@@ -1,0 +1,37 @@
+﻿{include file="public/header" /}
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 主页内容中心 <span class="c-gray en">&gt;</span> 主页内容管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> 
+		<span class="l">
+			<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
+				<i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
+			 <a href="javascript:;" onclick="h_add_s('主页内容新增','{:url('home/add')}','')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 主页内容新增</a>
+		</span> 
+		<span class="r"><strong></strong></span> 
+	</div>
+	<div class="mt-20">
+	<table class="table table-border table-bordered table-hover table-bg table-sort">
+		<thead>
+			<tr class="text-c">
+				<th width="25"><input type="checkbox" name="" value=""></th>
+				<th width="80">ID</th>
+				<th width="100">门店名称</th>
+				<th width="100">城市</th>
+				<th width="100">分类栏目</th>
+				<th width="150">联系电话</th>
+				<th width="150">申请时间</th>
+				<th width="60">状态</th>
+				<th width="100">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			
+		</tbody>
+	</table>
+	</div>
+	
+</div>
+{include file="public/footer" /}
+</body>
+</html>

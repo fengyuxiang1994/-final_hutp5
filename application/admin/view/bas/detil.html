@@ -1,0 +1,173 @@
+{include file="public/header" /}
+<body>
+<div class="page-container">
+	<form class="form form-horizontal" id="form-article-add" enctype="multipart/form-data" >
+<div class="cl pd-5 bg-1 bk-gray "> <span class="l"><h6>基本信息</h6></span></div>  
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商户名称：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$basData.name}" placeholder="" id="" name="name">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>所属城市：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<select name="city_id" class="select select-box cityId" style=" width:25%">
+					<option value="0">-请选择-</option>
+					{volist name="citys" id="vo"}
+				     	<option value="{$vo.id}" {if condition="$basData.city_id eq $vo.id"} selected="selected"{/if}>{$vo.name}</option>
+					{/volist}
+				</select>
+                &nbsp;&nbsp;&nbsp;
+				<select name="se_city_id" class="select select-box select_city" style=" width:25%">
+						<option value="0">{:getSeCityName($basData.city_path)}</option>					
+				</select>
+		    </div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>缩图：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+		        <img src="{$basData.logo}" id="upload_img" width="150px" height="150px" >
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>营业执照：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<img src="{$basData.licence_logo}" id="upload_img" width="150px" height="150px" >
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商户介绍：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+                <script id="editor" type="text/plain" name="description"  style="width:100%;height:400px;">
+                {$basData.description}</script>			
+            </div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>银行账号：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$basData.bank_info}" placeholder="" id="" name="bank_info">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>开户行名称：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$basData.bank_name}" placeholder="" id="" name="bank_name">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>开户行姓名：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$basData.bank_user}" placeholder="" id="" name="bank_user">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>法人：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$basData.faren}" placeholder="" id="" name="faren">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>法人电话：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$basData.faren_tel}" placeholder="" id="" name="faren_tel">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>邮箱：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$basData.email}" placeholder="" id="" name="email">
+			</div>
+		</div>
+
+<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><h6>总店信息</h6></span></div>  
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>电话：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$locationData.tel}" placeholder="" id="" name="tel">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>联系人：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$locationData.contact}" placeholder="" id="" name="contact">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>分类栏目：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<span class="select-box">
+					<select name="category_id" class="select categoryID">
+						<option value="0">-请选择-</option>
+						{volist name="categorys" id="vo"}
+						    <option value="{$vo.id}">{$vo.name}</option>
+						{/volist}
+					</select>
+				</span>
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>所属子类栏目：</label>
+			<div class="formControls col-xs-8 col-sm-9 select_category">
+				
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商户地址：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$locationData.address}" placeholder="" id="" name="address">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>营业时间：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$locationData.open_time}" placeholder="" id="" name="open_time">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>门店简介：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+                <script id="editorr" type="text/plain" name="content"  style="width:100%;height:400px;">
+                {$locationData.content}</script>			
+            </div>
+		</div>
+<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><h6>账号信息</h6></span></div>  
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>用户名：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$accountData.username}" placeholder="" id="" name="username">
+			</div>
+		</div>
+	</form>
+</div>
+{include file="public/footer" /}
+</body>
+<script type="text/javascript">
+	var SCOPE = {
+		'city_url' : "{:url('api/city/getCityByParentId')}",
+		'category_url' : "{:url('api/category/getCategoryByParentId')}",
+	}
+</script>
+<script type="text/javascript">
+//实例化编辑器
+//建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+var ue = UE.getEditor('editor');
+var ue = UE.getEditor('editorr');
+</script>
+</html> 

@@ -1,0 +1,62 @@
+﻿{include file="public/header" /}
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 城市管理 <span class="c-gray en">&gt;</span> 城市列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+	<div class="text-c"> 
+		日期范围：
+		<input type="text" class="input-text" id="countTimestart" onfocus="selecttime(1)" value="" placeholder="" name=" start_time" style="width:120px;">
+		-
+		<input type="text" class="input-text" id="countTimeend" onfocus="selecttime(2)" value="" placeholder="" name="end_time" style="width:120px;">
+	
+		<input type="text" class="input-text" style="width:250px" placeholder="输入管理员名称" id="" name="">
+		<button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>
+	</div>
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> 
+
+		<span class="l">
+			{if condition='$id eq 0'}<a href="javascript:;" onclick="h_add('添加城市','{:url('city/add')}','','270')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加城市</a>
+			{else /}
+			<a  href="{$http}" class="btn btn-success radius">返回</a>
+			<!-- <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>  -->
+			{/if}
+		</span> 
+		<!-- <span class="r">共有数据：<strong>54</strong> 条</span>  -->
+
+	</div>
+	<table class="table table-border table-bordered table-bg">
+		<thead>
+			<tr class="text-c">
+				<th width="25"><input type="checkbox" name="" value=""></th>
+				<th width="40">ID</th>
+				<th width="150">城市名称</th>
+				<th width="90">城市英文名称</th>
+				<th width="130">加入时间</th>
+				<th width="100">是否已启用</th>
+				<th width="100">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			{volist name="cityIndexSelect" id="vo"}
+			<tr class="text-c">
+				<td><input type="checkbox" value="1" name=""></td>
+				<td>{$vo.id}</td>
+				<td>{$vo.name}</td>
+				<td class="text-c listorder"><input size="3" attr-id="{$vo.id}" name="listorder" value="{$vo.listorder}" /></td>
+				<td>{$vo.create_time|date="Y-m-d H:i", ###}</td>
+				<td class="td-status"><a href="{:url('city/status',['id'=>$vo.id , 'status'=>$vo.status==1?0:1])}" title="点击修改状态">{$vo.status|status}</a></td>
+				<td class="td-manage">
+					{if condition='$id eq 0'} <a href="{:url('city/index',['parent_id'=>$vo.id])}">获取子栏目</a> {/if}
+					
+					<a title="编辑" href="javascript:;" onclick="h_edit('编辑','{:url('citycity/edit',['id'=>$vo.id])}','','','270')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> 
+					<a title="删除" href="javascript:;" onclick="h_del('{:url('city/status',['id'=>$vo.id , 'status'=>-1])}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
+				</td>
+			</tr>
+			{/volist}
+		</tbody>
+	</table>
+	</div>
+		{:paginate($cityIndexSelect)}
+</div>
+{include file="public/footer" /}
+</body>
+</html>

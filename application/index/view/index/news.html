@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="导途吧">
+    <meta name="description" content="导途吧">
+    <title>西沐网络</title>
+    <link rel="stylesheet" href="STATICSH/css/bootstrap.css" >
+    <link rel="stylesheet" href="STATICSH/css/rainbow.css" >
+    <script src="STATICSH/js/jQuery-2.1.4.min.js" ></script>
+    <script src="STATICSH/js/bootstrap.js" ></script>
+    <style>
+    </style>
+</head>
+<body>
+<div class="top_header">
+    <div class="clearfix" style="width: 1000px; margin: 0 auto">
+        <div class="clearfix login_module  cright">
+            <button class="cright dr" >登录</button>
+            <p class="cright" style="width: 2px; height: 12px; margin-top: 8px; border-left: 1px solid #fff;"></p>
+            <a href="reg.html"> <button class="cright" data-toggle="modal" data-target="#login"> 注册</button><a/>
+        </div>
+        <div id="user" class="user clearfix cright">
+            <span class="cright"></span>
+            <p class="cright">用户：</p>
+        </div>
+    </div>
+</div>
+<div class="header clearfix">
+    <div  style="width: 1000px; margin: 0 auto">
+        <p class="cleft logo_text">导途吧</p>
+        <ul class="clearfix nav_r cright">
+            <li class="cleft">
+                <a  href="{:url('index/index')}" style="float: left;">首页</a>
+            </li>
+            <li class="cleft">
+                <a class="active" href="{:url('index/about_us')}" >关于我们</a>
+            </li>
+            <li class="cleft">
+                <a href="{:url('index/news1')}" >行业资讯</a>
+            </li>
+            <li class="cleft">
+                <a href="news{:url('index/news')}" >产品介绍</a>
+            </li>
+            <li class="cleft">
+                <a href="{:url('index/contact_us')}" >联系我们</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="banner">
+    <img src="STATICSH/images/top.jpg"  alt="">
+</div>
+
+
+<section class="characteristic">
+	<p style="    font-size: 2.3em; margin-bottom: 15px;color: #333;text-align: center;">根据您的手机,选择下载</p>
+	<div style="height:123px;margin-left: 32%;">
+		<div style="float: left;text-align: center;font-weight: bold;">
+			<p style="font-size: 18px;"><span style="color: red;">IOS手机</span>用户可以在 APP STORE 搜索 <span style="color: red;">“互连出行”</span> 下载</p>
+			<p style="font-size: 18px;"><span style="color: red;">华为手机</span>用户可以在 华为应用市场 搜索<span style="color: red;"> “互连出行” </span>下载</p>
+			<p style="font-size: 18px;">Android手机用户也可以扫旁边的二维码下载哦</p>
+		</div>
+		<div style="float: left;margin-left: 150px;">
+		    <img src="STATICSH/images/er.png"/>
+		</div>
+	</div>
+</section>
+<section class="news">
+    <div class="clearfix" style="width: 1000px; margin: 20px auto;">
+        <div class="cright" style="width: 1000px; height: 600px; background: #fff;">
+            <h3>产品动态</h3>
+           <!-- <p style="width: 650px;">华北地区</p>-->
+            <ul style="width: 1000px;">
+                <li data-toggle="modal" data-target="#login" class="dq" ><h4 style="font-weight: bold;cursor:pointer;font-size: 25px;">1.首款实时定位通联产品《互连出行》上线</h4><p style="font-size：20px；">《互连出行》是挺哥与百万车友历经十余年穿越、自驾世界及祖国各地,怀抱社会的责任感,立志打造出一款改变现今社会出行的通联工具,真正代表了..</p></li>
+                <li data-toggle="modal" data-target="#login" class="dq" ><h4 style="font-weight: bold;cursor:pointer;font-size: 25px;">2.手机各种定位技术解析和优缺点分析</h4><p style="font-size：20px；">Android，iPhone等智能手机上的定位技术是一大亮点，实用性非常高。无数基于位置的服务(Location Based Service，简称LBS)应用都建立...</p></li>
+                <li data-toggle="modal" data-target="#login" class="dq" ><h4 style="font-weight: bold;cursor:pointer;font-size: 25px;">3.GPS即将不再孤独 地球上四大卫星定位系统技术对比</h4><p style="font-size：20px；">如果说到汽车定位导航技术，你首先想到是什么？没错，答案就是美国佬的全球定位系统（Global Positioning System，简称GPS）。自从GPS...</p></li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<div class="footer">
+    <p>杭州西沐网络科技有限公司</p>
+    <p>公司地址：杭州市余杭区仓前街道绿汀路1号3幢112-3室 &nbsp;&nbsp;&nbsp;&nbsp;公司电话：0571-86653797&nbsp;&nbsp;&nbsp;&nbsp;邮编：311113 </p>
+    <p>浙ICP备16028161号-1</p>
+</div>
+
+
+
+
+<div class="dl" style="width: 360px;height: 300px;background: #fff;border: solid 1px #eee;position: fixed;left: 50%;top: 50%;margin-left: -180px;margin-top: -150px;display: none;"	>
+
+  <p style="ext-align: center; background:#3BD4FE;height: 38px;sline-height: 38px;color: #fff;font-size:17px;box-shadow: 2px 2px 5px #aaa;font-family: "微软雅黑";margin-bottom: 25px;">杭州西沐网络科技有限公司 </p>
+
+  <div class="textbox">
+    <label for="" style="padding-left: 40px;">用户名</label><input type="text" class="text" style="width:190px;height: 32px;display: inline-block;font-size: 16px;margin: 20px;">
+  </div>
+  <div class="textbox">
+   <label for="" style="padding-left: 40px;">密&nbsp;&nbsp;&nbsp;&nbsp;码</label><input type="password" class="text" style="width:190px;height: 32px;display: inline-block;font-size: 16px;margin: 20px;">
+  </div>  
+<a href="" class="btnd" style="width: 220px;height: 40px;display: block;margin-left: 70px; background:#3BD4FE;line-height: 40px;text-align: center;font-size: 18px;color: #fff;">登录</a>
+<a href="javascript:void(0);" style="display: block;float: left;margin-top: 25px;text-align: center;width: 100%;font-size: 14px;color: #888;" class="gb">[关闭]</a> 
+</div>
+
+
+
+
+
+
+
+<div class="dd" style="width: 360px;height: 300px;background: #fff;border: solid 1px #eee;position: fixed;left: 50%;top: 50%;margin-left: -180px;margin-top: -150px;display: none;"	>
+  <p style="ext-align: center; background:#3BD4FE;height: 38px;line-height: 38px;color: #fff;font-size:17px;box-shadow: 2px 2px 5px #aaa;font-family: "微软雅黑";margin-bottom: 25px;">导途吧  <span style="font-size: 14px;color: red;">（产品介绍登录付费方可观看会员每月10元）</span></p>
+
+  <div class="textbox">
+    <label for="" style="padding-left: 40px;">用户名</label><input type="text" class="text" style="width:190px;height: 32px;display: inline-block;font-size: 16px;margin: 20px;">
+  </div>
+  <div class="textbox">
+   <label for="" style="padding-left: 40px;">密&nbsp;&nbsp;&nbsp;&nbsp;码</label><input type="password" class="text" style="width:190px;height: 32px;display: inline-block;font-size: 16px;margin: 20px;">
+  </div>  
+<a href="" class="btnd" style="width: 220px;height: 40px;display: block;margin-left: 70px; background:#3BD4FE;line-height: 40px;text-align: center;font-size: 18px;color: #fff;">登录</a>
+<a href="javascript:void(0);" style="display: block;float: left;margin-top: 25px;text-align: center;width: 100%;font-size: 14px;color: #888;" class="gb">[关闭]</a> 
+</div>
+
+
+<script type="text/javascript" src="STATICSH/js/jquery-1.7.2.js"></script>
+<script>
+  $(function() {
+
+        $('.dr').click(function() {
+
+      $('.dl').show();
+
+    });
+
+            $('.gb').click(function() {
+
+      $('.dl').hide();
+
+
+    }); 
+    
+    
+    
+     $('.dq').click(function() {
+
+      $('.dd').show();
+
+    });
+
+            $('.gb').click(function() {
+
+      $('.dd').hide();
+
+
+    }); 
+
+  })
+  </script>
+</body>
+</html>

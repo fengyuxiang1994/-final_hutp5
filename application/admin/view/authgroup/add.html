@@ -1,0 +1,50 @@
+﻿{include file="public/header" /}
+<body>
+<article class="page-container">
+	<form action="{:url('authgroup/save')}" method="post" class="form form-horizontal" id="form-admin-role-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>角色名称：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="roleName" name="title">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">备注：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="" name="description">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">权限设置：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+
+                <table>
+                    <tbody>
+                        {volist name="ruleGroups" id="authRule"}
+                            <tr>
+                                <td style="display: block;">
+                                    <label>
+                                      
+                                        <span {if condition="$authRule['level'] eq 0"} style="font-weight:bold; font-size:14px;height:36px; line-height:36px;display: block;background-color: #efefef;" {/if}  style="height:26px; line-height:26px;">  <?php echo str_repeat('&nbsp;', $authRule['level']*3);?>&nbsp; 
+                                        <input name="rules[]" value="{$authRule.id}" dataid="id-{$authRule.dataid}" class="inverted checkbox-parent {if condition="$authRule['level'] neq 0"} checkbox-child {/if} " type="checkbox">{$authRule.title}</span>
+                                    </label>
+                                </td>
+                            </tr>
+                        {/volist}
+                    </tbody> 
+                </table>
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<button type="submit" class="btn btn-success radius" id="admin-role-save">
+				   <i class="icon-ok"></i> 确定
+			    </button>
+			</div>
+		</div>
+	</form>
+</article>
+
+{include file="public/footer" /}
+</body>
+</html>

@@ -1,0 +1,37 @@
+{include file="public/header" /}
+<body>
+<article class="page-container">
+	<form action="{:url('category/save')}" method="post" class="form form-horizontal" id="form-member-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>生活服务分类名称：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$category->name}" placeholder="" id="name" name="name">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>栏目：</label>
+			<div class="formControls col-xs-8 col-sm-9"> 
+				<span class="select-box">
+					<select class="select" size="1" name="parent_id">
+						<option value="0" selected>——顶级——</option>
+						{volist name="categorys" id="vo"}
+						    <option value="{$vo.id}" {if condition="$category.parent_id eq $vo.id"} selected="selected" {/if}>——{$vo.name}——</option>
+						{/volist}
+					</select>
+				</span> 
+			</div>
+		</div>
+	    <input type="hidden" name="id" value="{$category->id}">
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+				<!-- <button  type="submit" class="btn btn-primary radius" ><i class="Hui-iconfont">&#xe632;</i> 保存</button>
+				<button onClick="layer_close();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button> -->
+			</div>
+		</div>
+	</form>
+</article>
+{include file="public/footer" /}
+</body>
+</html>

@@ -1,0 +1,45 @@
+{include file="public/header" /}
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 商家中心 <span class="c-gray en">&gt;</span> 商家管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+    <div class="mt-20">
+        <table class="table table-border table-bordered table-hover table-bg table-sort">
+            <thead>
+            <tr class="text-c">
+                <th width="25"><input type="checkbox" name="" value=""></th>
+                <th width="100">ID</th>
+                <th width="100">文章ID</th>
+                <th width="100">回复人ID</th>
+                <th width="150">评论内容</th>
+                <th width="150">评论时间</th>
+                <th width="100">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+           <foreach name="res" item="res">
+
+            <tr class="text-c">
+                <td><input type="checkbox" value="1" name=""></td>
+               <td>{$res.id}</td>
+               <td>{$res.issue_id}</td>
+               <td>{$res.user_id}</td>
+               <td>{$res.reply_msg}</td>
+                <td>{$res.create_date}</td>
+                <td class="td-manage">
+                    <button style="width: 50;height: 50" onclick="h_edit_s('查看回复内容详情','{:url('pinglun/detil',['id'=>$res.id])}','')">查看</button>
+                    <button style="width: 50;height: 50">删除</button>
+                </td>
+            </tr>
+           </foreach>
+            </tbody>
+        </table>
+    </div>
+</div>
+{include file="public/footer" /}
+</body>
+<script type="text/javascript">
+    var SCOPE = {
+        'listorder_url' : "{:url('category/listorder')}",
+    }
+</script>
+</html>
