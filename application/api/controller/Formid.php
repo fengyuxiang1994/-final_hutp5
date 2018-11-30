@@ -15,5 +15,13 @@ class Formid extends Controller
     public function collectFormId(){
         $user_id = input('user_id');
         $form_id = input('form_id');
+        $data =[
+            'user_id' => $user_id,
+            'form_id' => $form_id,
+        ];
+        $forminfo = model('XcxFormid')->insert($data);
+        if ($forminfo){
+            return '保存成功';
+        }
     }
 }

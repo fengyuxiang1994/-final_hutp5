@@ -27,15 +27,15 @@ class Modelreply extends Controller
         $addinfo = model('XcxAdd')
             ->where('id',$comment_id)
             ->find();
-//        if ($user_id == $addinfo['user_id']){
-//            return error('自己的文章不需要发送通知');
-//        }
+        if ($user_id == $addinfo['user_id']){
+            return error('自己的文章不需要发送通知');
+        }
         $userinfo = model('XcxUser')
             ->where('id', $addinfo['user_id'])
             ->find();
         $page = input('page');
-//        $touser = $userinfo['openid'];
-        $touser ="opnXT5HSYAoewG7n2HKptiMAbMyE";
+        $touser = $userinfo['openid'];
+       // $touser ="opnXT5HSYAoewG7n2HKptiMAbMyE";
         $form_id = input('form_id');
         $reply_msg = input('reply_msg');
 //        $page ="pages/index/index";
