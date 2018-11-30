@@ -16,9 +16,9 @@ return [
     'appid' => 'wxd4b281b25058b551',
     'secret' => '6e7a6c3b99e832b0eda41dcf705b5f55',
     'grant_type' => 'authorization_code',
-    'KeyId'      => 'LTAIJhZ8q5l3tSDt',  //Access Key ID
-    'KeySecret'  => 'iP1N9m2ykzgqT4WiNaTcFVhthABXze',  //Access Key Secret
+    'KeyId'      => 'LTAIhFtzQIrB2zF1',  //Access Key ID
+    'KeySecret'  => 'yqrE4X66l6WGw3OnaUe19sBmZG68F2',  //Access Key Secret
     'Endpoint'   => 'oss-cn-hangzhou.aliyuncs.com',  //阿里云oss 外网地址endpoint
-    'Bucket'     => 'images-daotuba123',  //Bucket名称
+    'Bucket'     => 'daotuba-image',  //Bucket名称
 
 ];

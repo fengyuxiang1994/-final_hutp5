@@ -62,8 +62,18 @@ class Search extends Controller
             ->find();
             $resu['user']=$user;
             $resu['reply']= $value['reply_msg'];
+            return $value['create_date'];die;
 
-            $resu['time'] = date("m月d日 H:i",strtotime($value['create_date']));
+            $new = date('Y-m-d H:i:s',time());
+            $arr = $this->diffDate($value['create_date'],$new);
+            if ($arr['d']<1){
+                $resu['time']= $arr['h'].'小时前';
+            }else{
+                $resu['time'] = date("m月d日 H:i",strtotime($value['create_date']));
+            }
+
+
+
             $resu['num']=$value['zan_count'];
             $resu['id']=$value['id'];
             $data = model('XcxReply')
@@ -150,6 +160,35 @@ class Search extends Controller
             $data[$i]['is_hot'] = true;
         }
         return $data;
+    }
+
+
+    //首页搜索
+    public function addSearch() {
+//        $keyword = input('keywrods');
+        $time = '2018-11-29 17:03:33';
+        $resu = date("m月d日 H:i",strtotime($time));
+        $new = date('Y-m-d H:i:s',time());
+//        if ($time)
+        $arr = $this->diffDate($time,$new);
+        if ($arr['d']<1){
+            $arr = $arr['h'].'小时前';
+        }
+        return $arr;
+    }
+    public  function diffDate($date1,$date2)
+    {
+        $datetime1 = new \DateTime($date1);
+        $datetime2 = new \DateTime($date2);
+        $interval = $datetime1->diff($datetime2);
+        $time['y']         = $interval->format('%Y');
+        $time['m']         = $interval->format('%m');
+        $time['d']         = $interval->format('%d');
+        $time['h']         = $interval->format('%H');
+        $time['i']         = $interval->format('%i');
+        $time['s']         = $interval->format('%s');
+        $time['a']         = $interval->format('%a');    // 两个时间相差总天数
+        return $time;
     }
 
 

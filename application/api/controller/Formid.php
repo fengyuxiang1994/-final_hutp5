@@ -15,6 +15,9 @@ class Formid extends Controller
     public function collectFormId(){
         $user_id = input('user_id');
         $form_id = input('form_id');
+        if(!$user_id || !$form_id){
+            return '参数错误';
+        }
         $data =[
             'user_id' => $user_id,
             'form_id' => $form_id,
