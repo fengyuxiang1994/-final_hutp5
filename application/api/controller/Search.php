@@ -62,17 +62,20 @@ class Search extends Controller
             ->find();
             $resu['user']=$user;
             $resu['reply']= $value['reply_msg'];
-            return $value['create_date'];die;
 
             $new = date('Y-m-d H:i:s',time());
             $arr = $this->diffDate($value['create_date'],$new);
-            if ($arr['d']<1){
-                $resu['time']= $arr['h'].'小时前';
+            if ($arr['a']<1){
+                $aaa = substr($arr['h'], 1);
+
+                if($arr['h'] == '0'){
+                    $resu['time'] = "刚刚";
+                }else{
+                    $resu['time']  = $aaa.'小时前';
+                }
             }else{
                 $resu['time'] = date("m月d日 H:i",strtotime($value['create_date']));
             }
-
-
 
             $resu['num']=$value['zan_count'];
             $resu['id']=$value['id'];
@@ -166,13 +169,20 @@ class Search extends Controller
     //首页搜索
     public function addSearch() {
 //        $keyword = input('keywrods');
-        $time = '2018-11-29 17:03:33';
+        $time = '2018-11-29 15:03:33';
         $resu = date("m月d日 H:i",strtotime($time));
         $new = date('Y-m-d H:i:s',time());
 //        if ($time)
         $arr = $this->diffDate($time,$new);
-        if ($arr['d']<1){
-            $arr = $arr['h'].'小时前';
+        return $arr;
+        if ($arr['a']<1){
+            $aaa = substr($arr['h'], 1);
+
+            if($arr['h'] == '0'){
+                $arr= "刚刚";
+            }else{
+                $arr = $aaa.'小时前';
+            }
         }
         return $arr;
     }
