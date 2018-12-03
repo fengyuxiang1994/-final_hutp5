@@ -69,7 +69,7 @@
 				<td>{$vo.addressname}</td>
 
 
-				<td>{$vo.create_time|date="Y-m-d H:i", ###}</td>
+				<td>{$vo.create_time}</td>
 				<td class="td-status"><a href="{:url('add/status',['id'=>$vo.id , 'status'=>$vo.status==1?0:1])}" title="点击修改状态">{$vo.status|status}</a></td>
 				<td class="td-manage">
 					<!-- <a style="text-decoration:none" onClick="member_stop(this,'10001')" href="javascript:;" title="获取子栏目"><i class="Hui-iconfont">&#xe631;</i></a>  -->

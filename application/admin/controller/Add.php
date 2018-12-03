@@ -12,7 +12,8 @@ class Add extends Controller
     		$imgd= model("XcxImg")->seleIndex($id);
     		$uu = [];
 	    	foreach ($imgd as &$vo) {
-	    		array_push($uu, 'http://www.xcx.com'.$vo['name']);
+	    		//array_push($uu, 'http://www.xcx.com'.$vo['name']);
+                $uu[] = $vo['name'];
 	    	}
 	    	$voo['image'] = $uu;	
     	}

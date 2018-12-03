@@ -22,11 +22,16 @@ class Profit extends Controller
         if ($user_id == null || $comment_id== null){
             return error('0','获取参数失败','');
         }
+        $money = model('XcxPtSetting')
+            ->find();
+        if ($money['tx_kg'] != 1){
+            return '体现通道已关闭';
+
+        }
         $data = model('XcxAdd')
             ->where('id', $comment_id)
             ->find();
-        $money = model('XcxPtSetting')
-            ->find();
+
         $time =  date("Y-m-d H:i:s",time());
         $times =$money['time_sj'];
         $res = [

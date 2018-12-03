@@ -21,10 +21,10 @@ class XcxAdd extends BasModel
     public function getAddIndex()
     {
         $data['status'] = 1;
-        $order = ['id' => 'desc'];
+        $order = ['create_time' => 'asc'];
         $return = $this->where($data)
             ->order($order)
-            ->paginate(2,false,['query'=>request()->param()]);
+            ->paginate(20,false,['query'=>request()->param()]);
         // echo $this->getLastSql();
         return $return;
     }
