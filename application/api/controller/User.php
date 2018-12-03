@@ -154,6 +154,8 @@ class User extends Controller
                 'gender' => empty($data['gender']) ? '' : $data['gender'],
                 'city' => empty($data['city']) ? '' : $data['city'],
                 'province' => empty($data['province']) ? '' : $data['province'],
+                'create_time' => date('Y-m-d H:i:s',time()),
+                'update_time' => date('Y-m-d H:i:s',time()),
             ];
             $res = model('XcxUser')->add($userData);
             if ($res) {

@@ -23,6 +23,24 @@ class Add extends Controller
         ]);   
     }
 
+    public function look() {
+	    $id = input('id');
+        $data['issue_id'] = $id;
+        $order = ['create_date' => 'desc'];
+        $add = model('XcxComment')
+            ->where($data)
+            ->order($order)
+            ->paginate(20,false,['query'=>request()->param()]);
+        return $this->fetch('', [
+            'add' => $add,
+        ]);
+    }
 
+    public function delete_add() {
+	    $id = input('id');
+	    $status = input('status');
+	    $info = model('XcxAdd')->where('id',$id)->update(['status'=>'-1']);
+        $this->success('删除成功', 'add/index');
+    }
 
 }

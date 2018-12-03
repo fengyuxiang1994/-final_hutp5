@@ -117,8 +117,8 @@ class Pay extends Controller
             'nonce_str'=>self::createNoncestr(),//随机字符串
             'partner_trade_no'=> date('YmdHis').rand(1000, 9999),//商户订单号
             'openid'=> $re_openid,//用户openid
-//            'check_name'=>'NO_CHECK',//校验用户姓名选项,
-            'check_name'=>'FORCE_CHECK',
+            'check_name'=>'NO_CHECK',//校验用户姓名选项,
+            //'check_name'=>'FORCE_CHECK',
             're_user_name'=> $check_name,//收款用户姓名
             'amount'=>$total_amount,//金额
             'desc'=> $desc,//企业付款描述信息
