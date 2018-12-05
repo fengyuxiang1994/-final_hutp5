@@ -38,8 +38,9 @@ class Category extends  BasController
     	$validate = validate('Category');
     	// $hu = $validate->check($data);
     	// echo $hu;
-    	
-    	if(!$validate->scene('add')->check($data)) {
+        $data['create_time']=date('Y-m-d H:i:s',time());
+
+        if(!$validate->scene('add')->check($data)) {
             $this->error($validate->getError());
         }
 

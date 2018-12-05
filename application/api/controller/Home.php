@@ -202,7 +202,10 @@ class Home extends Controller
     //获取分类信息
     public function getClassInfo()
     {
-        $classInfo = model('Category')->select();
+        $classInfo = model('Category')
+            ->where('status',1)
+            ->order('listorder','desc')
+            ->select();
         return $classInfo;
     }
 

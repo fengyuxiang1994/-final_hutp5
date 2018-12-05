@@ -28,7 +28,10 @@ class Look extends Controller
         if (!$user_id) {
             return error('fail', '请查看参数', '');
         }
-        $data = model('XcxAdd')->where('user_id', $user_id)->select();
+        $data = model('XcxAdd')
+            ->where('user_id', $user_id)
+            ->order('create_time','desc')
+            ->select();
 
         foreach ($data as $k => $v) {
             $arr = [];
@@ -49,7 +52,10 @@ class Look extends Controller
         if (!$user_id) {
             return error('fail', '请查看参数', '');
         }
-        $data = model('XcxShoucang')->where('user_id', $user_id)->select();
+        $data = model('XcxShoucang')
+            ->where('user_id', $user_id)
+            ->order('create_date','desc')
+            ->select();
         $arr = [];
 
         foreach ($data as $k => $v) {
@@ -656,7 +662,7 @@ class Look extends Controller
         if(!empty($guaninfo)){
             $arrs = [];
             foreach ($guaninfo as $key => $value){
-                $userinfos = model('XcxUser')->where('id',$value['form_user_id'])->find();
+                $userinfos = model('XcxUser')->where('id',$value['user_id'])->find();
                 $arrs[] = $userinfos;
             }
             $data['myGuanzhu'] = $arrs;

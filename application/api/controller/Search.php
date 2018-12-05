@@ -199,12 +199,13 @@ class Search extends Controller
         $xpoint = input('xpoint');
         $ypoint = input('ypoint');
         $image = input('image');
-        $address = model('XcxAddressShoucang')
+
+        $addresinfo = model('XcxAddressShoucang')
             ->where('user_id',$user_id)
             ->where('xpoint',$xpoint)
             ->where('ypoint',$ypoint)
             ->find();
-        if ($address){
+        if ($addresinfo){
             return '已收藏';
         }
         $data = [
