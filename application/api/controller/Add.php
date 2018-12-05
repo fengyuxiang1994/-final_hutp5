@@ -59,6 +59,23 @@ class Add extends Controller
             ];
             model('XcxUserAt')->data($datas)->save();
         }
+
+        $userguanzhu = model('XcxUserguanzhu')
+            ->where('user_id',$data['id'])
+            ->select();
+        if (!empty($userguanzhu)){
+            foreach ($userguanzhu as $key => $value){
+                $userid = $value['form_user_id'];
+
+                $data = [
+                    'user_id' => $userid,
+                    'add_id' => $addid['id'],
+                    'create_date' => date('Y-m-d H:i:s',time()),
+                ];
+                model('XcxAddnotice')->insert($data);
+            }
+        }
+
 //        $topic_info = json_decode($data['topic_info']);
 //        foreach ($topic_info as $key => $val){
 //            var_dump($val);

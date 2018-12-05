@@ -9,7 +9,7 @@ namespace app\common\model;
 
 use think\Model;
 
-class XcxUserguanzhuNotion extends BasModel
+class XcxAddnotice extends BasModel
 {
 
 }

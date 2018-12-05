@@ -108,7 +108,9 @@ class Search extends Controller
     //话题列表
     public function topicList() {
         $keyword = input('keyword');
-        $data = model('XcxTopic')->where('topic_title','like',"%$keyword%")->select();
+        $data = model('XcxTopic')
+            ->where('topic_title','like',"%$keyword%")
+            ->select();
         return $data;
     }
 
@@ -168,23 +170,11 @@ class Search extends Controller
 
     //首页搜索
     public function addSearch() {
-//        $keyword = input('keywrods');
-        $time = '2018-11-29 15:03:33';
-        $resu = date("m月d日 H:i",strtotime($time));
-        $new = date('Y-m-d H:i:s',time());
-//        if ($time)
-        $arr = $this->diffDate($time,$new);
-        return $arr;
-        if ($arr['a']<1){
-            $aaa = substr($arr['h'], 1);
-
-            if($arr['h'] == '0'){
-                $arr= "刚刚";
-            }else{
-                $arr = $aaa.'小时前';
-            }
+        $keyword = input('keywrods');
+        if(!$keyword){
+            return '参数为空';
         }
-        return $arr;
+//        $info = model('XcxAdd')->where('')
     }
     public  function diffDate($date1,$date2)
     {
@@ -202,4 +192,49 @@ class Search extends Controller
     }
 
 
+    public function address(){
+        $user_id = input('user_id');
+        $address = input('address');
+        $addressname = input('addressname');
+        $xpoint = input('xpoint');
+        $ypoint = input('ypoint');
+        $image = input('image');
+        $address = model('XcxAddressShoucang')
+            ->where('user_id',$user_id)
+            ->where('xpoint',$xpoint)
+            ->where('ypoint',$ypoint)
+            ->find();
+        if ($address){
+            return '已收藏';
+        }
+        $data = [
+            'user_id'=>$user_id,
+            'address'=>$address,
+            'addressname'=>$addressname,
+            'xpoint'=>$xpoint,
+            'ypoint'=>$ypoint,
+            'image'=>$image,
+            'create_date'=>date('Y-m-d H:i:s',time()),
+        ];
+     $info =  model('XcxAddressShoucang')->insert($data);
+     if ($info){
+         return '收藏成功';
+     }
+    }
+
+    public function addressinfo() {
+        $user_id =input('user_id');
+        $address = model('XcxAddressShoucang')
+            ->where('user_id',$user_id)
+            ->select();
+        return $address;
+    }
+
+    public function addressdel() {
+        $user_id =input('id');
+        $address = model('XcxAddressShoucang')
+            ->where('id',$user_id)
+            ->delete();
+        return $address;
+    }
 }

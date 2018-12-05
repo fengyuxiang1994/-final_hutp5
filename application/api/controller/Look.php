@@ -203,7 +203,7 @@ class Look extends Controller
         }
         
          $touser_id = model('XcxAdd')->where('id',$comment_id)->field('user_id')->select();
-          $res = model('XcxZan')->insert(['touser_id'=>$touser_id[0]['user_id'],'user_id' => $user_id, 'comment_id' => $comment_id, 'type' => 1]);
+          $res = model('XcxZan')->insert(['touser_id'=>$touser_id[0]['user_id'],'user_id' => $user_id, 'comment_id' => $comment_id, 'type' => 1,'create_date'=>date('Y-m-d H:i:s',time())]);
         if ($resaa || $res ) {
             return toJson('1000', '点赞成功', '', '');
            
@@ -636,5 +636,33 @@ class Look extends Controller
         return 'Success';
     }
 
-
+    public function myFans() {
+        $user_id =input('user_id');
+        if (!$user_id){
+            return '参数错误';
+        }
+        $info = model('XcxUserguanzhu')->where('user_id',$user_id)->select();
+        if(!empty($info)){
+            $arr = [];
+            foreach ($info as $key => $value){
+                $userinfo = model('XcxUser')->where('id',$value['form_user_id'])->find();
+                $arr[] = $userinfo;
+            }
+            $data['myFans'] = $arr;
+        }else{
+            $data['myFans']=[];
+        }
+        $guaninfo = model('XcxUserguanzhu')->where('form_user_id',$user_id)->select();
+        if(!empty($guaninfo)){
+            $arrs = [];
+            foreach ($guaninfo as $key => $value){
+                $userinfos = model('XcxUser')->where('id',$value['form_user_id'])->find();
+                $arrs[] = $userinfos;
+            }
+            $data['myGuanzhu'] = $arrs;
+        }else{
+            $data['myGuanzhu']=[];
+        }
+        return $data;
+    }
 }
