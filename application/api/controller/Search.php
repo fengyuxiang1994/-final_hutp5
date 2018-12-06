@@ -86,11 +86,11 @@ class Search extends Controller
             $arr =[];
             foreach ($data as $k => $v) {
                 $users = model('XcxUser')
-                    ->field(['nickName'])
+                    ->field(['nickName,id'])
                     ->where('id',$v['to_user_id'])
                     ->find();
                 $usersin = model('XcxUser')
-                    ->field(['nickName'])
+                    ->field(['nickName,id'])
                     ->where('id',$v['from_user_id'])
                     ->find();
                 $arr['reply_id']=$v['id'];

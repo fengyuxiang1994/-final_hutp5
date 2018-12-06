@@ -1,0 +1,53 @@
+{include file="public/header" /}
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页
+    <span class="c-gray en">&gt;</span>
+    系统管理
+    <span class="c-gray en">&gt;</span>
+    基本设置
+    <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+</nav>
+<div class="page-container">
+    <!--<div>-->
+        <!--<textarea class="textarea" style="width:98%; height:300px; resize:none"  id="keyword">{$keyword}</textarea>-->
+
+    <!--</div>-->
+    <!--<div class="mt-20 text-c">-->
+        <!--<button name="system-base-save" id="system-base-save" class="btn btn-success radius" type="submit" onclick="add_keyword()"><i class="icon-ok"></i> 确定</button>-->
+    <!--</div>-->
+<form action="{:url('system/addKeyword')}" method="post" class="form form-horizontal" id="form-member-add">
+    <div>
+        <textarea class="textarea" style="width:98%; height:300px; resize:none"  id="keyword" name="keyword">{$keyword}</textarea>
+    </div>
+    <div class="mt-20 text-c">
+            <input class="btn btn-success radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+    </div>
+</form>
+</div>
+
+<script type="text/javascript" src="STATICA/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="STATICA/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="STATICA/static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="STATICA/static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+
+<script type="text/javascript" src="STATICA/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="STATICA/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+<script type="text/javascript" src="STATICA/lib/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="STATICA/lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript">
+
+    $(function(){
+        $('.skin-minimal input').iCheck({
+            checkboxClass: 'icheckbox-blue',
+            radioClass: 'iradio-blue',
+            increaseArea: '20%'
+        });
+        $("#tab-system").Huitab({
+            index:0
+        });
+    });
+
+
+</script>
+</body>
+</html>
