@@ -39,7 +39,7 @@ class Category extends Model
 		];
 
 		$order = [
-		    'listorder' => 'desc',
+		    'listorder' => 'asc',
 		    'id' => 'desc',
 		];
 		$res = $this->where($data)

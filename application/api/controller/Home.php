@@ -204,7 +204,7 @@ class Home extends Controller
     {
         $classInfo = model('Category')
             ->where('status',1)
-            ->order('listorder','desc')
+            ->order('listorder','asc')
             ->select();
         return $classInfo;
     }
