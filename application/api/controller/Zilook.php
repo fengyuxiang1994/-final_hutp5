@@ -27,41 +27,139 @@ class Zilook extends Controller
         $user_id = array_map(function ($v){
             return $v['id'];
         },$user_id);
-        $data = model('XcxShoucang')->field(['user_id','comment_id'])->where('comment_id','in', $user_id)->page($page,10)->order(['create_date'=>'desc'])->select();
+        $data = model('XcxShoucang')->where('comment_id','in', $user_id)->page($page,10)->order(['create_date'=>'desc'])->select();
 
+        $sear = new Search();
         foreach ($data as $v => $k) {
+            model('XcxShoucang')->where('id',$k['id'])->update(['shoucang_status'=>1]);
+
             $user = model('XcxUser')->where('id', $k['user_id'])->find();
 
             $res['user']['nickName'] = $user['nickName'];
             $res['user']['avatarUrl'] = $user['avatarUrl'];
 
+            $new = date('Y-m-d H:i:s',time());
+            $arr = $sear->diffDate($k['create_date'],$new);
+            if ($arr['a']<1){
+                $aaa = substr($arr['h'], 1);
+
+                if($arr['h'] == '0'){
+                    $res['time'] = "刚刚";
+                }else{
+                    $res['time']  = $aaa.'小时前';
+                }
+            }else{
+                $res['time'] = date("m月d日 H:i",strtotime($k['create_date']));
+            }
+
             $resu = model('XcxAdd')->where('id', $k['comment_id'])->find();
             $image = model('XcxImg')->field('name')->where('imgid', $resu['id'])->find();
-
+            $res['status'] =$k['shoucang_status'];
             $arr = $image['name'];
             $res['id'] = $k['comment_id'];
             $res['image'] = $arr;
             $ress[] = $res;
         }
         return $ress;
-
-
     }
+
+    public function status() {
+        $user_id = input('user_id');
+        if (!$user_id) {
+            return $this->error('参数错误', '', '', '');
+        }
+        $zanstatus = model('XcxZan')->where('touser_id',$user_id)->where('status',0)->find();
+        if (empty($zanstatus)){
+            $data['DianZan']['status'] = 1;
+        }else{
+            $data['DianZan']['status'] = 0;
+        }
+        $shoustatus = model('XcxAdd')->where('user_id',$user_id)->select();
+        foreach ($shoustatus as $key => $value){
+            $info = model('XcxShoucang')->where('comment_id',$value['id'])->where('shoucang_status',0)->find();
+            if ($info){
+                $data['ShouStatus']['status'] = 0;
+                continue;
+            }else{
+                $data['ShouStatus']['status'] = 1;
+            }
+        }
+        $pinglunstatus = model('XcxAdd')->where('user_id',$user_id)->select();
+        foreach ($pinglunstatus as $key => $value){
+            $info = model('XcxComment')->where('issue_id',$value['id'])->where('comment_status',0)->find();
+            if ($info){
+                $data['pinglunstatus']['status'] = 0;
+                continue;
+            }else{
+                $data['pinglunstatus']['status'] = 1;
+            }
+        }
+        $fanstatus = model('XcxUserguanzhuNotion')->where('user_id',$user_id)->where('guanzhu_status',0)->find();
+
+            if ($fanstatus){
+                $data['fanstatus']['status'] = 0;
+            }else{
+                $data['fanstatus']['status'] = 1;
+            }
+         $tongzhi = model('XcxAddnotice')
+             ->where('tongzhi_status',0)
+             ->where('user_id',$user_id)
+             ->find();
+        if ($tongzhi){
+            $data['tongzhi']['status'] = 0;
+        }else{
+            $data['tongzhi']['status'] = 1;
+        }
+       $atuser = model('XcxUserAtNotion')
+           ->where('at_notice_status',0)
+            ->where('to_user_id',$user_id)
+           ->find();
+        if ($atuser){
+            $data['atuser']['status'] = 0;
+        }else{
+            $data['atuser']['status'] = 1;
+        }
+
+        return $data;
+    }
+
 
     //别人点我点赞列表
     public function userdianZanList()
     {
         $user_id = input('user_id');
         if (!$user_id) {
-            return $this->error('用户id不存在', '', '', '');
+            return $this->error('参数错误', '', '', '');
         }
         $page = input('page') ? input('page') : 0;
-        $wenzhang = model('XcxZan')->where('touser_id',$user_id)->page($page,10)->order(['id'=>'desc'])->select();
+        model('XcxZan')->where('touser_id',$user_id)->update(['status'=>1]);
+        $wenzhang = model('XcxZan')
+            ->where('touser_id',$user_id)
+            ->page($page,10)
+            ->order(['id'=>'desc'])
+            ->select();
         $res = [];
         $ress = [];
+        $sear = new Search();
         foreach ($wenzhang as $keys => $values) {
+
             $comment = model('XcxAdd')->field('id')->where('id', $values['comment_id'])->find();
             $iamge = model('XcxImg')->field('name')->where('imgid', $comment['id'])->find();
+
+            $new = date('Y-m-d H:i:s',time());
+            $arr = $sear->diffDate($values['create_date'],$new);
+            if ($arr['a']<1){
+                $aaa = substr($arr['h'], 1);
+
+                if($arr['h'] == '0'){
+                    $res['time'] = "刚刚";
+                }else{
+                    $res['time']  = $aaa.'小时前';
+                }
+            }else{
+                $res['time'] = date("m月d日 H:i",strtotime($values['create_date']));
+            }
+            $res['status'] = $values['status'];
             $res['image'] = $iamge['name'];
             $data = model('XcxUser')->field('avatarUrl,nickName')->where('id', $values['user_id'])->find();
             $res['user'] = $data;
@@ -81,39 +179,48 @@ class Zilook extends Controller
         }
         $page = input('page') ? input('page') : 0;
         // 该用户的粉丝
-        $data = model('XcxUserguanzhu')
-            ->field('form_user_id')
+        $data = model('XcxUserguanzhuNotion')
             ->where('user_id', $user_id)
+            ->order(['create_date'=>'desc'])
             ->page($page,10)
             ->select();
-        if (count($data)==0){
-            return [];
+        $sear = new Search();
+        foreach ($data as  $key => $value){
+
+            $userinfo =model('XcxUser')->where('id',$value['form_user_id'])->find();
+            $value['nickName'] = $userinfo['nickName'];
+            $value['avatarUrl'] = $userinfo['avatarUrl'];
+            $value['autograph_name'] = $userinfo['autograph_name'];
+
+            $datas = model('XcxUserguanzhu')
+                ->where('user_id', $user_id)
+                ->where('form_user_id', $value['form_user_id'])
+                ->find();
+            if (!$datas){
+                $value['zhuangtai'] = '0';
+            }else{
+                $value['zhuangtai'] = '1';
+            }
+
+            $new = date('Y-m-d H:i:s',time());
+            $arr = $sear->diffDate($value['create_date'],$new);
+            if ($arr['a']<1){
+                $aaa = substr($arr['h'], 1);
+
+                if($arr['h'] == '0'){
+                    $value['create_date'] = "刚刚";
+                }else{
+                    $value['create_date']  = $aaa.'小时前';
+                }
+            }else{
+                $value['create_date'] = date("m月d日 H:i",strtotime($value['create_date']));
+            }
+            model('XcxUserguanzhuNotion')
+                ->where('user_id', $user_id)
+                ->update(['guanzhu_status'=>1]);
         }
-        $data = array_map(function ($v){
-            return intval($v['form_user_id']);
-        },$data);
-        $touser_list = model('XcxUser')
-            ->field(['autograph_name','nickName','avatarUrl','id'])
-            ->where('id','in',$data)
-            ->order(['id'=>'desc'])
-            ->select();
 
-        // 该用户关注的粉丝
-        $is_both_notice = model('XcxUserguanzhu')
-            ->field(['user_id'])
-            ->where('form_user_id',$user_id)
-            ->select();
-        $is_both_notice = array_map(function ($v){
-            return intval($v['user_id']);
-        },$is_both_notice);
-        $GLOBALS['data'] = $is_both_notice;
-
-        // 增加用户的互相关注状态
-        $touser_list = array_map(function ($v){
-            $v['state']=in_array($v['id'],$GLOBALS['data']) ? '已关注' : '关注';
-            return $v;
-        },$touser_list);
-        return $touser_list;
+        return $data;
     }
 
     // 收到的评论
@@ -125,25 +232,44 @@ class Zilook extends Controller
         $page = input('page') ? input('page') : 0;
         $article_list = model('XcxAdd')->field('id')->where('user_id',$user_id)->select();
         $article_list = array_map(function ($v){return $v['id'];},$article_list);
-        $message_list = model('XcxComment')
-            ->field([
-                'hutp_xcx_comment.user_id',
-                'hutp_xcx_comment.id',
-                'hutp_xcx_comment.reply_msg',
-                'user.nickName',
-                'img.name',
-                'user.avatarUrl',
-                'hutp_xcx_comment.issue_id'
-            ])
+
+        model('XcxComment')->where('issue_id','in',$article_list)->update(['comment_status'=>1]);
+        $message_list =  model('XcxComment')
             ->where('issue_id','in',$article_list)
-            ->join('hutp_xcx_user user','hutp_xcx_comment.user_id=user.id')
-            ->join('hutp_xcx_img img','hutp_xcx_comment.issue_id=img.imgid')
-            ->order(['hutp_xcx_comment.create_date'=>'desc'])
+            ->order(['create_date'=>'desc'])
             ->page($page,10)
             ->select();
-          if (empty('$message_list')) {
+        if (empty($message_list)) {
               return [];
           }
+        $sear = new Search();
+        $res = [];
+        foreach ($message_list as $key => $value){
+
+            $userinfo = model('XcxUser')->where('id',$value['user_id'])->find();
+            $value['nickName'] = $userinfo['nickName'];
+            $value['avatarUrl'] = $userinfo['avatarUrl'];
+
+            $sss = model('XcxImg')->where('imgid',$value['issue_id'])->find();
+            $value['image'] = $sss['name'];
+            $new = date('Y-m-d H:i:s',time());
+            $arr = $sear->diffDate($value['create_date'],$new);
+            if ($arr['a']<1){
+                $aaa = substr($arr['h'], 1);
+
+                if($arr['h'] == '0'){
+                    $value['create_date'] = "刚刚";
+                }else{
+                    $value['create_date']  = $aaa.'小时前';
+                }
+            }else{
+                $value['create_date'] = date("m月d日 H:i",strtotime($value['create_date']));
+            }
+//            if ($value['comment_status']==0){
+//                model('XcxComment')->where('id',$value['id'])->update(['comment_status'=>1]);
+//            }
+        }
+
         return $message_list;
     }
 
@@ -220,19 +346,35 @@ class Zilook extends Controller
             return $this->error('用户id不存在','','','');
         }
         $page = input('page') ? input('page') : 0;
-        $at_mine = model('XcxUserAt')
-            ->field([
-                'art.id',
-                'art.image',
-                'user.nickName',
-                'user.avatarUrl'
-            ])
-            ->join('hutp_xcx_add art','art.id = hutp_xcx_user_at.add_id')
-            ->join('hutp_xcx_user user','user.id = hutp_xcx_user_at.user_id')
+        model('XcxUserAtNotion')
             ->where('to_user_id',$user_id)
-            ->order(['hutp_xcx_user_at.create_time'=>'desc'])
+            ->update(['at_notice_status'=>1]);
+        $at_mine = model('XcxUserAtNotion')
+            ->where('to_user_id',$user_id)
+            ->order(['create_time'=>'desc'])
             ->page($page,10)
             ->select();
+        $sear = new Search();
+        foreach ($at_mine as $key => $value){
+            $userinfo = model('XcxUser')->where('id',$value['user_id'])->find();
+            $value['nickName'] = $userinfo['nickName'];
+            $value['avatarUrl'] = $userinfo['avatarUrl'];
+            $img = model('XcxImg')->where('imgid',$value['add_id'])->find();
+            $value['image'] = $img['name'];
+            $new = date('Y-m-d H:i:s',time());
+            $arr = $sear->diffDate($value['create_time'],$new);
+            if ($arr['a']<1){
+                $aaa = substr($arr['h'], 1);
+
+                if($arr['h'] == '0'){
+                    $value['create_time'] = "刚刚";
+                }else{
+                    $value['create_time']  = $aaa.'小时前';
+                }
+            }else{
+                $value['create_time'] = date("m月d日 H:i",strtotime($value['create_time']));
+            }
+        }
 
         return $at_mine;
     }
@@ -246,31 +388,43 @@ class Zilook extends Controller
         $page = input('page') ? input('page') : 0;
 
         //  关注用户的新文章
-        $follow_arr = model('XcxUserguanzhu')
-            ->field('user_id')
-            ->where('form_user_id',$user_id)
-            ->select();
-        $follow_arr = array_map(function ($v){
-            return intval($v['user_id']);
-        },$follow_arr);
-        date_default_timezone_set('PRC');
-        $current_date = date('Y-m-d H:i:s',time()-3600*24);
-        $follow_arr = model('XcxAdd')
-            ->field(['home_uaer_name','id','create_time'])
-            ->where('user_id','in',$follow_arr)
-            ->where('status',1)
-            ->where('create_time','>',$current_date)
-            ->order(['create_time'=>'desc'])
+        model('XcxAddnotice')
+            ->where('user_id',$user_id)
+            ->update(['tongzhi_status'=>1]);
+        $follow_arr = model('XcxAddnotice')
+            ->field(['add_id','create_date','tongzhi_status'])
+            ->where('user_id',$user_id)
+            ->order(['create_date'=>'desc'])
             ->page($page,10)
             ->select();
-        foreach ($follow_arr as $k => $v){
-            $image = model('XcxImg')->field('name')->where('imgid',$v['id'])->select();
-            $v['image'] = $image[0]['name'];
+        $sear = new Search();
+        foreach ($follow_arr as $key => $value){
+            $addinfo = model('XcxAdd')
+                ->field(['home_uaer_name','id'])
+                ->where('status',1)
+                ->where('id',$value['add_id'])
+                ->find();
+            $image = model('XcxImg')
+                ->field('name')
+                ->where('imgid',$addinfo['id'])
+                ->find();
+            $value['home_uaer_name'] = $addinfo['home_uaer_name'];
+            $value['id'] =$addinfo['id'];
+            $value['image'] = $image['name'];
+            $new = date('Y-m-d H:i:s',time());
+            $arr = $sear->diffDate($value['create_date'],$new);
+            if ($arr['a']<1){
+                $aaa = substr($arr['h'], 1);
+
+                if($arr['h'] == '0'){
+                    $value['create_date'] = "刚刚";
+                }else{
+                    $value['create_date']  = $aaa.'小时前';
+                }
+            }else{
+                $value['create_date'] = date("m月d日 H:i",strtotime($value['create_date']));
+            }
         }
-        $follow_arr = array_map(function ($v){
-            $v['type'] = 1;
-            return $v;
-        },$follow_arr);
         return $follow_arr;
     }
 
@@ -292,6 +446,13 @@ class Zilook extends Controller
                     'form_user_id'=>$user_id,
                     'create_date'=>date('Y-m-d H:i:s',time())
                 ]);
+            model('XcxUserguanzhuNotion')
+                ->insert([
+                    'user_id'=>$form_user_id,
+                    'form_user_id'=>$user_id,
+                    'create_date'=>date('Y-m-d H:i:s',time())
+                ]);
+
             return $this->success('关注成功');
         }
     }

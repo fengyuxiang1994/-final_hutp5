@@ -24,7 +24,7 @@ class XcxUser extends BasModel
 		$order = ['id' => 'desc'];
         $return = $this->where($data)
                     ->order($order)
-                    ->paginate(1,false,['query'=>request()->param()]);
+                    ->paginate(20,false,['query'=>request()->param()]);
         // echo $this->getLastSql(); //
         return $return;
 	}

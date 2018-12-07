@@ -1,0 +1,146 @@
+{include file="public/header" /}
+<body>
+<nav class="breadcrumb"><a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
+                           href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a>
+</nav>
+<div class="page-container">
+    <div class="text-c">
+        <form action="{:url('tixian/index')}" method="get" class="form form-horizontal" id="form-member-add">
+            <!--<span class="select-box inline">-->
+            <!--<select name="category_id" class="select">-->
+            <!--<option value="0">全部分类</option>-->
+            <!--{volist name="categorychx" id="vo"}-->
+            <!--<option value="{$vo.id}" {if condition="$vo.id eq $category_id"} selected="selected" {/if}>{$vo.name}</option>-->
+            <!--{/volist}-->
+            <!--</select>-->
+            <!--</span>-->
+
+            <!--<span class="select-box inline">-->
+            <!--<select name="city_id" class="select">-->
+            <!--<option value="0">全部城市</option>-->
+            <!--{volist name="citychx" id="vo"}-->
+            <!--<option value="{$vo.id}" {if condition="$vo.id eq $city_id"} selected="selected" {/if}>{$vo.name}</option>-->
+            <!--{/volist}-->
+            <!--</select>-->
+            <!--</span>-->
+
+            日期范围：
+            <input type="text" class="input-text" id="countTimestart" onfocus="selecttime(1)" value="{$start_time}"
+                   placeholder="" name=" start_time" style="width:120px;">
+            -
+            <input type="text" class="input-text" id="countTimeend" onfocus="selecttime(2)" value="{$end_time}"
+                   placeholder="" name="end_time" style="width:120px;">
+
+            <input type="text" name="name" id="" placeholder="姓名、手机号" value="{$name}" style="width:250px"
+                   class="input-text">
+            <button class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜提现记录</button>
+        </form>
+    </div>
+
+
+    <div class="mt-20">
+        <table class="table table-border table-bordered table-hover table-bg table-sort">
+            <thead>
+            <tr class="text-c">
+                <th width="25"><input type="checkbox" name="" value=""></th>
+                <th width="100">ID</th>
+                <th width="100">用户ID</th>
+                <th width="100">用户姓名</th>
+                <th width="100">用户手机号</th>
+                <th width="100">提现方式</th>
+                <th width="150">提现状态</th>
+                <th width="150">提现金额</th>
+                <th width="150">审核</th>
+                <th width="150">提现时间</th>
+                <th width="100">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name="res" id="res"}
+            <tr class="text-c">
+                <td><input type="checkbox" value="1" name=""></td>
+                <td>{$res.id}</td>
+                <td>{$res.xcx_user_id}</td>
+                <td>{$res.nickName}</td>
+                <td>{$res.userPhone}</td>
+                <td>{$res.txFangshi}</td>
+                <td>{$res.txZtai}</td>
+                <td>{$res.money}</td>
+                <td class="td-status">
+                    <?php if($res['status']==1) {?>
+                    <span class="label label-success radius">已通过</span>
+                    <?php }elseif($res['status']==0){?>
+                    <span class="label label-danger radius">待审核</span>
+                    <?php }else{?>
+                    <span class="label label-default radius">未通过</span>
+                    <?php }?>
+                </td>
+                <td>{$res.tx_time}</td>
+                <td style="width: 200px;" class="td-statu" align="center">
+                    <?php if($res['status']==1) {?>
+                    <button class="btn btn-danger radius">已审核</button>
+                    <?php }elseif($res['status']==0){?>
+                    <button class="btn btn-success" onClick="article_shenhe(this,'{$res.id}')">审核通过</button>
+                    <?php }else{?>
+                    <button class="btn btn-danger radius">已驳回</button>
+                    <?php }?>
+                </td>
+
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+    </div>
+</div>
+{include file="public/footer" /}
+</body>
+<script type="text/javascript">
+    var SCOPE = {
+        'listorder_url': "{:url('category/listorder')}",
+    }
+
+    /*资讯-审核*/
+    function article_shenhe(obj, id) {
+
+        layer.confirm('是否同意提现审核？', {
+                btn: ['通过', '不通过', '取消'],
+                shade: false,
+                closeBtn: 0
+            },
+            function () {
+                $(obj).parents("tr").find(".td-manage").prepend('<a class="c-primary" onClick="article_start(this,id)" href="javascript:;" title="申请上线">申请上线</a>');
+                $(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已通过</span>');
+                $(obj).parents("tr").find(".td-statu").html('<span class="btn btn-danger radius">已审核</span>');
+                // $(obj).remove();
+                $.ajax({
+                    url: "updateTxian",
+                    data: {
+                        id: id//参数
+                    },
+                    type: "GET",
+                    success: function (re) {
+                        layer.msg('已通过', {icon: 6, time: 1000});
+                    }
+                })
+
+            },
+            function () {
+                $(obj).parents("tr").find(".td-manage").prepend('<a class="c-primary" onClick="article_shenqing(this,id)" href="javascript:;" title="申请上线">申请上线</a>');
+                $(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">未通过</span>');
+                $(obj).parents("tr").find(".td-statu").html('<span class="btn btn-danger radius">已审核</span>');
+                // $(obj).remove();
+                $.ajax({
+                    url: "noTxian",
+                    data: {
+                        id: id//参数
+                    },
+                    type: "GET",
+                    success: function (re) {
+                        layer.msg('未通过', {icon: 5, time: 1000});
+                    }
+                })
+
+            });
+    }
+</script>
+</html>
