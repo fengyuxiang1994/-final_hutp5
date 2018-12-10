@@ -652,6 +652,12 @@ class Look extends Controller
             $arr = [];
             foreach ($info as $key => $value){
                 $userinfo = model('XcxUser')->where('id',$value['form_user_id'])->find();
+                $infos = model('XcxUserguanzhu')->where('form_user_id',$user_id)->find();
+                if ($infos){
+                    $userinfo['zhuangtai'] = 'true';
+                }else{
+                    $userinfo['zhuangtai'] = 'false';
+                }
                 $arr[] = $userinfo;
             }
             $data['myFans'] = $arr;
@@ -663,6 +669,12 @@ class Look extends Controller
             $arrs = [];
             foreach ($guaninfo as $key => $value){
                 $userinfos = model('XcxUser')->where('id',$value['user_id'])->find();
+                $infos = model('XcxUserguanzhu')->where('user_id',$user_id)->find();
+                if ($infos){
+                    $userinfos['zhuangtai'] = 'true';
+                }else{
+                    $userinfos['zhuangtai'] = 'false';
+                }
                 $arrs[] = $userinfos;
             }
             $data['myGuanzhu'] = $arrs;

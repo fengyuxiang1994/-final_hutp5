@@ -5,9 +5,9 @@
  * Date: 2018/12/6
  * Time: 11:11
  */
-namespace app\admin\controller;
+namespace app\api\controller;
 use think\Controller;
-class Jubao extends  BasController
+class Userjubao extends  Controller
 {
     public function userJuBao() {
         $user_id = input('user_id');
@@ -29,7 +29,7 @@ class Jubao extends  BasController
         $data =[
             'user_id'=>$user_id,
             'to_user_id'=>$to_user_id,
-            'conents'=>$conents,
+            'contents'=>$conents,
             'comment_id'=>$comment_id,
             'create_time'=>date('Y-m-d H:i:s',time())
         ];

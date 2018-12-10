@@ -1,5 +1,6 @@
 <?php
 namespace app\admin\controller;
+use app\api\controller\Modelreply;
 use think\Controller;
 use think\Model;
 
@@ -8,6 +9,8 @@ class System extends Controller
 {
 	public function index()
     {
+        $res = \model('XcxPtSetting')->find();
+        $this->assign('setting',$res);
     	return $this->fetch();
     }
 
