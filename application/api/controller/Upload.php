@@ -7,21 +7,19 @@
  */
 
 namespace app\api\controller;
+
 use app\baiduyun\AipImageCensor;
+use think\Cache;
 use think\Controller;
 
 use OSS\OssClient;
 use OSS\Core\OssException;
+
 class Upload extends Controller
 {
     public function index()
     {
         $scr = $_FILES['file']['tmp_name'];
-        //图片鉴定
-        //---------------------------------------------
-
-
-        //---------------------------------------------
         $id = input('post.id');
         $status = input('types');
         if ($status == null) {
@@ -32,11 +30,57 @@ class Upload extends Controller
 
         }
         $ext = substr($_FILES['file']['name'], strrpos($_FILES['file']['name'], '.') + 1); // 上传文件后缀
+
         $dst = 'daotuba-images/' . $username . '/' . md5(time()) . $scr . '.' . $ext;     //上传文件名称
         // $this->load->library('AliUpload');
         $url = $this->upload($dst, $scr);
         $arr = parse_url($url);
-        $urls = $arr['scheme'] .'s://'.$arr['host'].$arr['path'];
+        $urls = $arr['scheme'] . 's://' . $arr['host'] . $arr['path'];
+
+        //图片鉴定
+        //---------------------------------------------
+        $accessKeyId = config('xcx.KeyId');
+        $accessKeySecret = config('xcx.KeySecret');
+        // Endpoint以杭州为例，其它Region请按实际情况填写。
+        $endpoint = config('xcx.Endpoint');
+        $bucket = config('xcx.Bucket');
+        $ossClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
+
+        $data = $this->banDuYun($urls);
+        foreach ($data['data'] as $key => $value) {
+            if ($value['msg'] === '存在二维码内容') {
+                $arr = parse_url($urls);
+                $aaa = substr($arr['path'], 1);
+                $ossClient->deleteObject($bucket, $aaa);
+                return ['msg' => '存在二维码内容'];
+            }
+            if ($value['msg'] === '存在色情内容') {
+                $arr = parse_url($urls);
+                $aaa = substr($arr['path'], 1);
+                $ossClient->deleteObject($bucket, $aaa);
+                return ['msg' => '存在色情内容'];
+            }
+            if ($value['msg'] === '存在暴恐内容') {
+                $arr = parse_url($urls);
+                $aaa = substr($arr['path'], 1);
+                $ossClient->deleteObject($bucket, $aaa);
+                return ['msg' => '存在暴恐内容'];
+            }
+            if ($value['msg'] === '存在政治敏感内容') {
+                $arr = parse_url($urls);
+                $aaa = substr($arr['path'], 1);
+                $ossClient->deleteObject($bucket, $aaa);
+                return ['msg' => '存在政治敏感内容'];
+            }
+            if ($value['msg'] === '存在水印码内容') {
+                $arr = parse_url($urls);
+                $aaa = substr($arr['path'], 1);
+                $ossClient->deleteObject($bucket, $aaa);
+                return ['msg' => '存在水印码内容'];
+            }
+        }
+
+        //---------------------------------------------
         $data = array('url' => $urls);
 
         $imgData = [
@@ -54,13 +98,14 @@ class Upload extends Controller
         return show(1, 'success', $imgda);
     }
 
-    public function banDuYun() {
-        $apP_id = config('xcx.APP_ID');
-        $api_key=config('xcx.API_KEY');
-        $secret_key =config('xcx.SECRET_KEY');
-//        $baiduyun = new \AipImageCensor($apP_id,$api_key,$secret_key);
-        $baiduyun = new AipImageCensor($apP_id,$api_key,$secret_key);
-        return $baiduyun;
+    public function banDuYun($url)
+    {
+        $app_id = '15112367';
+        $api_key = '22y6vWtG6OgXocyRDP708vZ3';
+        $secret_key = 'MvOopQeqWG0fK4KAQD8SaWXGlYj3oXrn';
+        $client = new AipImageCensor($app_id, $api_key, $secret_key);
+        $result = $client->imageCensorUserDefined($url);
+        return $result;
     }
 
 
@@ -134,59 +179,34 @@ class Upload extends Controller
         }
     }
 
-    public function url(){
+    public function url()
+    {
         $arr = parse_url('http://images-daotuba123.oss-cn-hangzhou.aliyuncs.com/daotuba-images/add-image/b37c00aabaf7addd76372fac75604e5a/tmp/php93QEp6.jpg');
-        $url = $arr['scheme'] .'s://'.$arr['host'].$arr['path'];
-          dump($url);
+        $url = $arr['scheme'] . 's://' . $arr['host'] . $arr['path'];
+        dump($url);
     }
 
-    public function aa(){
-        $orderLogic = new OrderLogic();
-        $timegap = I('timegap');
-        if($timegap){
-            $gap = explode('-', $timegap);
-            $begin = strtotime($gap[0]);
-            $end = strtotime($gap[1]);
-        }else{
-            //@new 新后台UI参数
-            $begin = strtotime(I('add_time_begin'));
-            $end = strtotime(I('add_time_end'));
-        }
-        // 搜索条件
-        $condition = array();
-        $keyType = I("keytype");
-        $keywords = I('keywords','','trim');
 
-        $consignee =  ($keyType && $keyType == 'consignee') ? $keywords : I('consignee','','trim');
-        $consignee ? $condition['consignee'] = trim($consignee) : false;
-
-        if($begin && $end){
-            $condition['add_time'] = array('between',"$begin,$end");
-        }
-
-        $store_name = ($keyType && $keyType == 'store_name') ? $keywords :  I('store_name','','trim');
-        if($store_name)
+    public function quick_sort()
+    {
+        $arr= mt_rand(1,5);
+        switch ($arr)
         {
-            $store_id_arr = M('store')->where("store_name like '%$store_name%'")->getField('store_id',true);
-            if($store_id_arr)
-            {
-                $condition['store_id'] = array('in',$store_id_arr);
-            }
+            case 1:
+                echo "Number 1";
+                break;
+            case 2:
+                echo "Number 2";
+                break;
+            case 3:
+                echo "Number 3";
+                break;
+            case 4:
+                echo "Number 4";
+                break;
+            default:
+                echo "No number between 5";
         }
-        $condition['order_status'] = array('gt',0);
-        $condition['order_prom_type'] = array('lt',5);
-        $order_sn = ($keyType && $keyType == 'order_sn') ? $keywords : I('order_sn') ;
-        $order_sn ? $condition['order_sn'] = trim($order_sn) : false;
-
-        I('order_status') != '' ? $condition['order_status'] = I('order_status') : false;
-//        I('pay_status') != '' ? $condition['pay_status'] = I('pay_status') : false;
-        I('pay_code') != '' ? $condition['pay_code'] = I('pay_code') : false;
-        I('shipping_status') != '' ? $condition['shipping_status'] = I('shipping_status') : false;
-        I('user_id') ? $condition['user_id'] = trim(I('user_id')) : false;
-        I('order_statis_id') != '' ? $condition['order_statis_id'] = I('order_statis_id') : false; // 结算统计的订单
-        $sort_order = I('order_by','DESC').' '.I('sort');
-
-
     }
 
 }

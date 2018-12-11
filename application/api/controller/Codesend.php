@@ -124,12 +124,12 @@ class Codesend extends Controller
     {
         $ACCESS_TOKEN = $this->getAccessToken();
         $page = input('page');
+        $scene = input('scene');
         $url = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=" . $ACCESS_TOKEN;
         $post_data =
             array(
-                'scene' => "34",
-                'page' => "pages/index/index",
-                'width' => "280"
+                'scene' => $scene,
+                'page' => $page,
             );
         $post_data = json_encode($post_data);
         $data = $this->send_post($url, $post_data);
@@ -138,23 +138,26 @@ class Codesend extends Controller
     }
 
     //二维码获取
-    public function getWXACode() {
-         $page = input('page');
+    public function getWXACode()
+    {
+        $path = input('path');
         $width = 280;
         $data = [
-            'path' => $page
+            'path' => $path
 
         ];
         $data = json_encode($data);
         $access_token = $this->getAccessToken();
-        $urlData ="https://api.weixin.qq.com/cgi-bin/wxaapp/createwxaqrcode?access_token={$access_token}";
+        $urlData = "https://api.weixin.qq.com/cgi-bin/wxaapp/createwxaqrcode?access_token={$access_token}";
         $apiData = $this->get_http_array($urlData, $data);
 //        $apiData = json_decode($this->curlHttp($urlData, true,true,$data), true);
-        $result=$this->data_uri($apiData,'image/png');
+        $result = $this->data_uri($apiData, 'image/png');
         return $result;
     }
+
     //开启curl post请求
-    public function get_http_array($url,$post_data) {
+    public function get_http_array($url, $post_data)
+    {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
