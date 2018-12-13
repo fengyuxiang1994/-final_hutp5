@@ -69,9 +69,8 @@ class Home extends Controller
         $data['category_id'] = $cat;
         $data['id'] = $lastid;
 
-//        $homeData = model('XcxAdd')->getFirstyyyy($limit, $data);
-        $homeData = model('XcxAdd')->quick_sort($limit, $data);
-       // shuffle($homeData);
+        $homeData = model('XcxAdd')->getFirstyyyy($limit, $data);
+        shuffle($homeData);
 
         foreach ($homeData as $k => $v) {
             $image = model('XcxImg')->where('imgid', $v['id'])->find();
@@ -84,8 +83,6 @@ class Home extends Controller
         }
         return show(1, 'success', $homeData);
     }
-
-
     public function getFindApi()
     {
         $id = input('get.id', 0, 'intval');
@@ -269,40 +266,8 @@ class Home extends Controller
 
         return $data;
     }
-
-
-    //根据城市进行获取内容
-    public function getCityHomeInfo()
-    {
-        // 显示查询数据几条
-        $limit = input('get.limit', 10, 'intval');
-
-        $lastid = input('get.lastid', 0, 'intval');
-//        $user_id = input('user_id');
-        //  获取分类id，按照分类取数据
-        $cat = input('get.cat', 0, 'intval');
-
-        $data = [];
-        $data['category_id'] = $cat;
-        $data['id'] = $lastid;
-        $data['city'] = input('city');
-//        $homeData = model('XcxAdd')->getFirstyyyy($limit, $data);
-        $homeData = model('XcxAdd')->getFirstyyyy($limit, $data);
-        // shuffle($homeData);
-
-        foreach ($homeData as $k => $v) {
-            $image = model('XcxImg')->where('imgid', $v['id'])->find();
-//            $v['image'] = $image['name'];
-            $v['hasChange'] = 'false';
-            $v['image'] = $image['name'];
-        }
-        if (!$homeData) {
-            return show(0, 'error');
-        }
-        return show(1, 'success', $homeData);
-    }
-
-    public function city(){
+  
+   public function city(){
         $data = model('XcxCity')
             ->field('id,name')
             ->where('pid',7)
@@ -362,7 +327,16 @@ class Home extends Controller
             $data[ $v['chart'] ][]=$v;
         }
         ksort($data);
-        return $data;
+      $datas =[]; 
+      foreach($data as $key=>$value){
+      	$datas[]=$value;
+      }
+      $res =[];
+      foreach($datas as $keys => $values){
+        $res[$keys]['initial']=$values[0]['chart'];
+         $res[$keys]['cityInfo'] = $values;
+      }
+        return $res;
     }
     /**
      * 返回取汉字的第一个字的首字母
@@ -416,6 +390,5 @@ class Home extends Controller
         print_r($str);
         echo '</pre>';
     }
-
 
 }

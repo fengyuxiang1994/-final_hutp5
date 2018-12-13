@@ -34,5 +34,6 @@ define('RUNTIME_PATH', __DIR__ . '/runtime/');
 define('APP_DEBUG', true);
 
 // 加载框架引导文件
+
 require __DIR__ . '/thinkphp/start.php';
 //require_once __DIR__ . '/vendor/autoload.php';

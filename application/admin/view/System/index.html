@@ -12,24 +12,17 @@
 		<div id="tab-system" class="HuiTab">
 			<div class="tabBar cl">
 				<span>基本设置</span>
-				<!--<span>安全设置</span>-->
-				<!--<span>邮件设置</span>-->
+				<span>安全设置</span>
+				<span>邮件设置</span>
 <!-- 				<span>其他设置</span>
  -->			</div>
-			<?php echo $setting;?>
 			<div class="tabCon">
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">
 						<span class="c-red">*</span>
 						提现开关：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<!--<input type="text" id="tx_kg" placeholder="默认关" value="{$setting.tx_kg==1?关:开}" class="input-text">-->
-						<input type="hidden"  name="tx_kg" value="{$setting.tx_kg}" />
-						<select class="input-text" id="tx_kg">
-							<option value ="1">开</option>
-							<option value ="2">关</option>
-
-						</select>
+						<input type="text" id="tx_kg" placeholder="默认关" value="" class="input-text">
 					</div>
 				</div>
 				<div class="row cl">
@@ -37,7 +30,7 @@
 						<span class="c-red">*</span>
 						默认提现金额：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" id="tx_money" placeholder="默认0" value="{$setting.tx_money}" class="input-text">
+						<input type="text" id="tx_money" placeholder="默认0" value="" class="input-text">
 					</div>
 				</div>
 				<div class="row cl">
@@ -45,12 +38,7 @@
 						<span class="c-red">*</span>
 						天数开关：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<!--<input type="text" id="time_kg" placeholder="默认开" value="{$setting.time_kg}" class="input-text">-->
-						<select class="input-text" id="time_kg" data-val="{$setting.time_kg}">
-							<option value ="1">开</option>
-							<option value ="2">关</option>
-
-						</select>
+						<input type="text" id="time_kg" placeholder="默认开" value="" class="input-text">
 					</div>
 				</div>
 				<div class="row cl">
@@ -58,7 +46,7 @@
 						<span class="c-red">*</span>
 						天数设置：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" id="time_sj" placeholder="默认三天" value="{$setting.time_sj}" class="input-text">
+						<input type="text" id="time_sj" placeholder="默认三天" value="" class="input-text">
 					</div>
 				</div>
 				<div class="row cl">
@@ -66,7 +54,7 @@
 						<span class="c-red">*</span>
 						每次获取金额：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" id="money" placeholder="默认为0" value="{$setting.money}" class="input-text">
+						<input type="text" id="money" placeholder="默认为0" value="" class="input-text">
 					</div>
 				</div>
 				<div class="row cl">
@@ -74,75 +62,66 @@
 						<span class="c-red">*</span>
 						浏览设置：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<!--<input type="text" id="browse_setting" placeholder="默认为正常" value="{$setting.browse_setting}" class="input-text">-->
-						<select class="input-text" id="browse_setting">
-							<?php if($setting['browse_setting']==0){?>
-							<option value ="{$setting.browse_setting}" selected = "selected">正常浏览</option>
-							<option value ="{$setting.browse_setting}">随机浏览</option>
-							<?php }else{?>
-							<option value ="{$setting.browse_setting}">正常浏览</option>
-							<option value ="{$setting.browse_setting}" selected = "selected">随机浏览</option>
-							<?php }?>
-						</select>
+						<input type="text" id="browse_setting" placeholder="默认为正常" value="" class="input-text">
 					</div>
 				</div>
 
 
 			</div>
-			<!--<div class="tabCon">-->
-				<!--<div class="row cl">-->
-					<!--<label class="form-label col-xs-4 col-sm-2">允许访问后台的IP列表：</label>-->
-					<!--<div class="formControls col-xs-8 col-sm-9">-->
-						<!--<textarea class="textarea" name="" id=""></textarea>-->
-					<!--</div>-->
-				<!--</div>-->
-				<!--<div class="row cl">-->
-					<!--<label class="form-label col-xs-4 col-sm-2">后台登录失败最大次数：</label>-->
-					<!--<div class="formControls col-xs-8 col-sm-9">-->
-						<!--<input type="text" class="input-text" value="5" id="" name="" >-->
-					<!--</div>-->
-				<!--</div>-->
-			<!--</div>-->
-			<!--<div class="tabCon">-->
-				<!--<div class="row cl">-->
-					<!--<label class="form-label col-xs-4 col-sm-2">邮件发送模式：</label>-->
-					<!--<div class="formControls col-xs-8 col-sm-9">-->
-						<!--<input type="text"  class="input-text" value="" id="" name="">-->
-					<!--</div>-->
-				<!--</div>-->
-				<!--<div class="row cl">-->
-					<!--<label class="form-label col-xs-4 col-sm-2">SMTP服务器：</label>-->
-					<!--<div class="formControls col-xs-8 col-sm-9">-->
-						<!--<input type="text" id="" value="" class="input-text">-->
-					<!--</div>-->
-				<!--</div>-->
-				<!--<div class="row cl">-->
-					<!--<label class="form-label col-xs-4 col-sm-2">SMTP 端口：</label>-->
-					<!--<div class="formControls col-xs-8 col-sm-9">-->
-						<!--<input type="text" class="input-text" value="25" id="" name="" >-->
-					<!--</div>-->
-				<!--</div>-->
-				<!--<div class="row cl">-->
-					<!--<label class="form-label col-xs-4 col-sm-2">邮箱帐号：</label>-->
-					<!--<div class="formControls col-xs-8 col-sm-9">-->
-						<!--<input type="text" class="input-text" value="5" id="emailName" name="emailName" >-->
-					<!--</div>-->
-				<!--</div>-->
-				<!--<div class="row cl">-->
-					<!--<label class="form-label col-xs-4 col-sm-2">邮箱密码：</label>-->
-					<!--<div class="formControls col-xs-8 col-sm-9">-->
-						<!--<input type="password" id="email-password" value="" class="input-text">-->
-					<!--</div>-->
-				<!--</div>-->
-				<!--<div class="row cl">-->
-					<!--<label class="form-label col-xs-4 col-sm-2">收件邮箱地址：</label>-->
-					<!--<div class="formControls col-xs-8 col-sm-9">-->
-						<!--<input type="text" id="email-address" value="" class="input-text">-->
-					<!--</div>-->
-				<!--</div>-->
-			<!--</div>-->
-			<!--<div class="tabCon">-->
-			<!--</div>-->
+			<div class="tabCon">
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">允许访问后台的IP列表：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<textarea class="textarea" name="" id=""></textarea>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">后台登录失败最大次数：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="5" id="" name="" >
+					</div>
+				</div>
+			</div>
+			<div class="tabCon">
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">邮件发送模式：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text"  class="input-text" value="" id="" name="">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">SMTP服务器：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" id="" value="" class="input-text">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">SMTP 端口：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="25" id="" name="" >
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">邮箱帐号：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="5" id="emailName" name="emailName" >
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">邮箱密码：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="password" id="email-password" value="" class="input-text">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">收件邮箱地址：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" id="email-address" value="" class="input-text">
+					</div>
+				</div>
+			</div>
+			<div class="tabCon">
+			</div>
 		</div>
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
@@ -163,11 +142,7 @@
 <script type="text/javascript" src="STATICA/lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="STATICA/lib/jquery.validation/1.14.0/messages_zh.js"></script>
 <script type="text/javascript">
-
-
 $(function(){
-    // alert($("input:hidden[name='tx_kg']").val());
-
 	$('.skin-minimal input').iCheck({
 		checkboxClass: 'icheckbox-blue',
 		radioClass: 'iradio-blue',
@@ -177,22 +152,6 @@ $(function(){
 		index:0
 	});
 });
-function article_save_submit(){
-    // var  tx_kg = document.getElementsByName('tx_kg').val();
-    alert($("input:hidden[name='tx_kg']").val());
-    // var tx_kg = $("#tx_kg").val();
-    // var tx_money = $("input[id='tx_money']").val();
-    // var time_kg =  $("#time_kg").val();
-    // var time_sj = $("input[id='time_sj']").val();
-    // var money = $("input[id='money']").val();
-    // var browse_setting =  $("#browse_setting").val();
-    // alert(tx_kg)
-    // alert(tx_money)
-    // alert(time_kg)
-    // alert(time_sj)
-    // alert(money)
-    // alert(browse_setting)
-}
 </script>
 </body>
 </html>

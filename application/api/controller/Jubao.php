@@ -7,7 +7,7 @@
  */
 namespace app\api\controller;
 use think\Controller;
-class Userjubao extends  Controller
+class Jubao extends  Controller
 {
     public function userJuBao() {
         $user_id = input('user_id');
