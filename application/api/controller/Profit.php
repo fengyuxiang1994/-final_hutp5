@@ -25,7 +25,7 @@ class Profit extends Controller
         $money = model('XcxPtSetting')
             ->find();
         if ($money['tx_kg'] != 1){
-            return '体现通道已关闭';
+            return '提现通道已关闭';
 
         }
         $data = model('XcxAdd')

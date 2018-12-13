@@ -193,8 +193,8 @@ class Zilook extends Controller
             $value['autograph_name'] = $userinfo['autograph_name'];
 
             $datas = model('XcxUserguanzhu')
-                ->where('user_id', $value['form_user_id'])
-                ->where('form_user_id',$user_id)
+                ->where('user_id', $user_id)
+                ->where('form_user_id', $value['form_user_id'])
                 ->find();
             if (!$datas){
                 $value['zhuangtai'] = '0';

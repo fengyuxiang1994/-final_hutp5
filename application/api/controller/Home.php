@@ -69,9 +69,8 @@ class Home extends Controller
         $data['category_id'] = $cat;
         $data['id'] = $lastid;
 
-//        $homeData = model('XcxAdd')->getFirstyyyy($limit, $data);
-        $homeData = model('XcxAdd')->quick_sort($limit, $data);
-       // shuffle($homeData);
+        $homeData = model('XcxAdd')->getFirstyyyy($limit, $data);
+        shuffle($homeData);
 
         foreach ($homeData as $k => $v) {
             $image = model('XcxImg')->where('imgid', $v['id'])->find();
@@ -84,8 +83,6 @@ class Home extends Controller
         }
         return show(1, 'success', $homeData);
     }
-
-
     public function getFindApi()
     {
         $id = input('get.id', 0, 'intval');
@@ -270,7 +267,6 @@ class Home extends Controller
         return $data;
     }
 
-
     //根据城市进行获取内容
     public function getCityHomeInfo()
     {
@@ -302,18 +298,25 @@ class Home extends Controller
         return show(1, 'success', $homeData);
     }
 
-    public function city(){
-        $data = model('XcxCity')
-            ->field('id,name')
+
+   public function city(){
+         $data = model('XcxCity')
             ->where('pid',7)
             ->select();
-        $datas=[];
-        foreach ($data as $key=>$value){
-            $result =model('XcxCity')
+    $datas=[];
+       foreach ($data as $key=>$value){
+         if($value['id'] === 280 || $value['id'] === 279){
+          // $value['citys'] =[];
+           $result[] = $value;
+            $datas= array_merge($result,$datas);
+         }else{
+         	 $result =model('XcxCity')
                 ->where('pid',$value['id'])
                 ->select();
+            //$value['citys'] = $result;
             $datas= array_merge($result,$datas);
-        }
+         }           
+    	}
         $res['China'] = $this->chartSort($datas);
 
         //国际
@@ -352,7 +355,7 @@ class Home extends Controller
      */
     public function chartSort($user){
         foreach ($user as $k => &$v) {
-            $v['chart']=$this->getFirstChart( $v['name_en'] );
+            $v['chart']=$this->getFirstChart( $v['name_pinyin'] );
         }
         $data=[];
         foreach ($user as $k => $v) {
@@ -362,7 +365,16 @@ class Home extends Controller
             $data[ $v['chart'] ][]=$v;
         }
         ksort($data);
-        return $data;
+      $datas =[]; 
+      foreach($data as $key=>$value){
+      	$datas[]=$value;
+      }
+      $res =[];
+      foreach($datas as $keys => $values){
+        $res[$keys]['initial']=$values[0]['chart'];
+         $res[$keys]['cityInfo'] = $values;
+      }
+        return $res;
     }
     /**
      * 返回取汉字的第一个字的首字母
@@ -416,6 +428,25 @@ class Home extends Controller
         print_r($str);
         echo '</pre>';
     }
-
+  public function citys(){
+    $data = model('XcxCity')
+            ->where('pid',7)
+            ->select();
+    $datas=[];
+       foreach ($data as $key=>$value){
+         if($value['id'] === 280 || $value['id'] === 279){
+          // $value['citys'] =[];
+           $result[] = $value;
+            $datas= array_merge($result,$datas);
+         }else{
+         	 $result =model('XcxCity')
+                ->where('pid',$value['id'])
+                ->select();
+            //$value['citys'] = $result;
+            $datas= array_merge($result,$datas);
+         }           
+    	}
+    return $datas;
+  }
 
 }

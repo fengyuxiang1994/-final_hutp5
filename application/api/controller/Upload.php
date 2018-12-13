@@ -52,32 +52,36 @@ class Upload extends Controller
                 $arr = parse_url($urls);
                 $aaa = substr($arr['path'], 1);
                 $ossClient->deleteObject($bucket, $aaa);
-                return ['msg' => '存在二维码内容'];
+                $urls = "https://daotuba-image.oss-cn-hangzhou.aliyuncs.com/_20181211180617.png";
+
             }
             if ($value['msg'] === '存在色情内容') {
                 $arr = parse_url($urls);
                 $aaa = substr($arr['path'], 1);
                 $ossClient->deleteObject($bucket, $aaa);
-                return ['msg' => '存在色情内容'];
+                $urls = "https://daotuba-image.oss-cn-hangzhou.aliyuncs.com/_20181211180617.png";
+
             }
             if ($value['msg'] === '存在暴恐内容') {
                 $arr = parse_url($urls);
                 $aaa = substr($arr['path'], 1);
                 $ossClient->deleteObject($bucket, $aaa);
-                return ['msg' => '存在暴恐内容'];
+                $urls = "https://daotuba-image.oss-cn-hangzhou.aliyuncs.com/_20181211180617.png";
+
             }
             if ($value['msg'] === '存在政治敏感内容') {
                 $arr = parse_url($urls);
                 $aaa = substr($arr['path'], 1);
                 $ossClient->deleteObject($bucket, $aaa);
-                return ['msg' => '存在政治敏感内容'];
+                $urls = "https://daotuba-image.oss-cn-hangzhou.aliyuncs.com/_20181211180617.png";
+
             }
-            if ($value['msg'] === '存在水印码内容') {
-                $arr = parse_url($urls);
-                $aaa = substr($arr['path'], 1);
-                $ossClient->deleteObject($bucket, $aaa);
-                return ['msg' => '存在水印码内容'];
-            }
+            //  if ($value['msg'] === '存在水印码内容'){
+            //     $arr = parse_url($urls);
+            //     $aaa = substr($arr['path'], 1);
+            //     $ossClient->deleteObject($bucket, $aaa);
+            //      return ['msg' => '存在水印码内容'];
+            // }
         }
 
         //---------------------------------------------
@@ -186,27 +190,5 @@ class Upload extends Controller
         dump($url);
     }
 
-
-    public function quick_sort()
-    {
-        $arr= mt_rand(1,5);
-        switch ($arr)
-        {
-            case 1:
-                echo "Number 1";
-                break;
-            case 2:
-                echo "Number 2";
-                break;
-            case 3:
-                echo "Number 3";
-                break;
-            case 4:
-                echo "Number 4";
-                break;
-            default:
-                echo "No number between 5";
-        }
-    }
 
 }
