@@ -104,11 +104,11 @@
                     {$vo.user_collection}</p></td>
                 <td><p class="label label-default radius" style="width: auto;height: auto;border-radius:40%;">
                     {$vo.user_comment}</p></td>
-                <td>
-                    <p class="label label-success radius" style="width: auto;height: auto;border-radius:40%;"
-                       ><a href="javascript:void(0);" onClick="msgbox(1)">{$vo.browse_num}</a></p>
-                </td>
-
+                <!--<td>-->
+                    <!--<p class="label label-success radius" style="width: auto;height: auto;border-radius:40%;"-->
+                       <!--&gt;<a href="javascript:void(0);" onClick="msgbox(1)">{$vo.browse_num}</a></p>-->
+                <!--</td>-->
+                <td class="text-c listorder"><input size="3" attr-id="{$vo.id}" name="listorder" value="{$vo.browse_num}" /></td>
 
                 <!--<td>{$vo.user_id}</td>-->
 
@@ -148,6 +148,10 @@
 
 
 {include file="public/footer" /}
-
+<script type="text/javascript">
+    var SCOPE = {
+        'listorder_url' : "{:url('add/listorder')}",
+    }
+</script>
 </body>
 </html>

@@ -8,6 +8,8 @@
 
 namespace app\api\controller;
 
+use app\baiduyun\AipImageCensor;
+use think\Cache;
 use think\Controller;
 
 use OSS\OssClient;
@@ -18,7 +20,6 @@ class Upload extends Controller
     public function index()
     {
         $scr = $_FILES['file']['tmp_name'];
-
         $id = input('post.id');
         $status = input('types');
         if ($status == null) {
@@ -28,13 +29,58 @@ class Upload extends Controller
             $username = "comment-image";    //我们给每个用户动态的创建一个文件夹
 
         }
-
         $ext = substr($_FILES['file']['name'], strrpos($_FILES['file']['name'], '.') + 1); // 上传文件后缀
+
         $dst = 'daotuba-images/' . $username . '/' . md5(time()) . $scr . '.' . $ext;     //上传文件名称
         // $this->load->library('AliUpload');
         $url = $this->upload($dst, $scr);
         $arr = parse_url($url);
-        $urls = $arr['scheme'] .'s://'.$arr['host'].$arr['path'];
+        $urls = $arr['scheme'] . 's://' . $arr['host'] . $arr['path'];
+
+        //图片鉴定
+        //---------------------------------------------
+        $accessKeyId = config('xcx.KeyId');
+        $accessKeySecret = config('xcx.KeySecret');
+        // Endpoint以杭州为例，其它Region请按实际情况填写。
+        $endpoint = config('xcx.Endpoint');
+        $bucket = config('xcx.Bucket');
+        $ossClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
+
+        $data = $this->banDuYun($urls);
+        foreach ($data['data'] as $key => $value) {
+            if ($value['msg'] === '存在二维码内容') {
+                $arr = parse_url($urls);
+                $aaa = substr($arr['path'], 1);
+                $ossClient->deleteObject($bucket, $aaa);
+                return ['msg' => '存在二维码内容'];
+            }
+            if ($value['msg'] === '存在色情内容') {
+                $arr = parse_url($urls);
+                $aaa = substr($arr['path'], 1);
+                $ossClient->deleteObject($bucket, $aaa);
+                return ['msg' => '存在色情内容'];
+            }
+            if ($value['msg'] === '存在暴恐内容') {
+                $arr = parse_url($urls);
+                $aaa = substr($arr['path'], 1);
+                $ossClient->deleteObject($bucket, $aaa);
+                return ['msg' => '存在暴恐内容'];
+            }
+            if ($value['msg'] === '存在政治敏感内容') {
+                $arr = parse_url($urls);
+                $aaa = substr($arr['path'], 1);
+                $ossClient->deleteObject($bucket, $aaa);
+                return ['msg' => '存在政治敏感内容'];
+            }
+            if ($value['msg'] === '存在水印码内容') {
+                $arr = parse_url($urls);
+                $aaa = substr($arr['path'], 1);
+                $ossClient->deleteObject($bucket, $aaa);
+                return ['msg' => '存在水印码内容'];
+            }
+        }
+
+        //---------------------------------------------
         $data = array('url' => $urls);
 
         $imgData = [
@@ -51,6 +97,17 @@ class Upload extends Controller
         $imgda->save();
         return show(1, 'success', $imgda);
     }
+
+    public function banDuYun($url)
+    {
+        $app_id = '15112367';
+        $api_key = '22y6vWtG6OgXocyRDP708vZ3';
+        $secret_key = 'MvOopQeqWG0fK4KAQD8SaWXGlYj3oXrn';
+        $client = new AipImageCensor($app_id, $api_key, $secret_key);
+        $result = $client->imageCensorUserDefined($url);
+        return $result;
+    }
+
 
     public function upload($dst, $src)
     {
@@ -122,10 +179,34 @@ class Upload extends Controller
         }
     }
 
-    public function url(){
+    public function url()
+    {
         $arr = parse_url('http://images-daotuba123.oss-cn-hangzhou.aliyuncs.com/daotuba-images/add-image/b37c00aabaf7addd76372fac75604e5a/tmp/php93QEp6.jpg');
-        $url = $arr['scheme'] .'s://'.$arr['host'].$arr['path'];
-          dump($url);
+        $url = $arr['scheme'] . 's://' . $arr['host'] . $arr['path'];
+        dump($url);
+    }
+
+
+    public function quick_sort()
+    {
+        $arr= mt_rand(1,5);
+        switch ($arr)
+        {
+            case 1:
+                echo "Number 1";
+                break;
+            case 2:
+                echo "Number 2";
+                break;
+            case 3:
+                echo "Number 3";
+                break;
+            case 4:
+                echo "Number 4";
+                break;
+            default:
+                echo "No number between 5";
+        }
     }
 
 }

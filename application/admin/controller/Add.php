@@ -42,5 +42,16 @@ class Add extends Controller
 	    $info = model('XcxAdd')->where('id',$id)->update(['status'=>'-1']);
         $this->success('删除成功', 'add/index');
     }
+    public function listorder($id, $listorder)
+    {
+        // echo $id."<br>";
+        // echo $listorder."<br>";
+        $res =$add = model("XcxAdd")->where('id',$id)->update(['browse_num' => $listorder]);
+        if($res) {
+            $this->result($_SERVER['HTTP_REFERER'], 1, '成功');
+        }else {
+            $this->result($_SERVER['HTTP_REFERER'], 0, '失败');
+        }
+    }
 
 }

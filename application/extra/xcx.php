@@ -20,5 +20,8 @@ return [
     'KeySecret'  => 'yqrE4X66l6WGw3OnaUe19sBmZG68F2',  //Access Key Secret
     'Endpoint'   => 'oss-cn-hangzhou.aliyuncs.com',  //阿里云oss 外网地址endpoint
     'Bucket'     => 'daotuba-image',  //Bucket名称
-
+    //百度云
+    'APP_ID'     => '15112367',
+    'API_KEY '     => '22y6vWtG6OgXocyRDP708vZ3',
+    'SECRET_KEY '     =>'MvOopQeqWG0fK4KAQD8SaWXGlYj3oXrn',
 ];

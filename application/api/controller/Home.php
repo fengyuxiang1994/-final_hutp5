@@ -69,8 +69,9 @@ class Home extends Controller
         $data['category_id'] = $cat;
         $data['id'] = $lastid;
 
-        $homeData = model('XcxAdd')->getFirstyyyy($limit, $data);
-        shuffle($homeData);
+//        $homeData = model('XcxAdd')->getFirstyyyy($limit, $data);
+        $homeData = model('XcxAdd')->quick_sort($limit, $data);
+       // shuffle($homeData);
 
         foreach ($homeData as $k => $v) {
             $image = model('XcxImg')->where('imgid', $v['id'])->find();
@@ -83,6 +84,8 @@ class Home extends Controller
         }
         return show(1, 'success', $homeData);
     }
+
+
     public function getFindApi()
     {
         $id = input('get.id', 0, 'intval');
@@ -204,7 +207,7 @@ class Home extends Controller
     {
         $classInfo = model('Category')
             ->where('status',1)
-            ->order('listorder','desc')
+            ->order('listorder','asc')
             ->select();
         return $classInfo;
     }
@@ -266,4 +269,153 @@ class Home extends Controller
 
         return $data;
     }
+
+
+    //根据城市进行获取内容
+    public function getCityHomeInfo()
+    {
+        // 显示查询数据几条
+        $limit = input('get.limit', 10, 'intval');
+
+        $lastid = input('get.lastid', 0, 'intval');
+//        $user_id = input('user_id');
+        //  获取分类id，按照分类取数据
+        $cat = input('get.cat', 0, 'intval');
+
+        $data = [];
+        $data['category_id'] = $cat;
+        $data['id'] = $lastid;
+        $data['city'] = input('city');
+//        $homeData = model('XcxAdd')->getFirstyyyy($limit, $data);
+        $homeData = model('XcxAdd')->getFirstyyyy($limit, $data);
+        // shuffle($homeData);
+
+        foreach ($homeData as $k => $v) {
+            $image = model('XcxImg')->where('imgid', $v['id'])->find();
+//            $v['image'] = $image['name'];
+            $v['hasChange'] = 'false';
+            $v['image'] = $image['name'];
+        }
+        if (!$homeData) {
+            return show(0, 'error');
+        }
+        return show(1, 'success', $homeData);
+    }
+
+    public function city(){
+        $data = model('XcxCity')
+            ->field('id,name')
+            ->where('pid',7)
+            ->select();
+        $datas=[];
+        foreach ($data as $key=>$value){
+            $result =model('XcxCity')
+                ->where('pid',$value['id'])
+                ->select();
+            $datas= array_merge($result,$datas);
+        }
+        $res['China'] = $this->chartSort($datas);
+
+        //国际
+        $guoji= model('XcxCity')
+            ->where('level',1)
+            ->select();
+        $info = [];
+        foreach ($guoji as $key=>$value){
+                $results =model('XcxCity')
+                    ->where('pid',$value['id'])
+                    ->where('level',2)
+                    ->select();
+//                foreach ($results as $k => $v){
+//                    if ($v['id']!=7){
+//                        $arr =model('XcxCity')
+//                            ->where('pid',$v['id'])
+//                            ->select();
+//                        foreach ($arr as $keys => $values){
+//                            $values['name'] = $values['name'].'('.$v['name'].')';
+//                        }
+//                        $info= array_merge($arr,$info);
+//                    }
+//                }
+            $info= array_merge($results,$info);
+        }
+        $res['international'] = $this->chartSort($info);
+
+        return $res;
+    }
+
+
+
+    /**
+     * 将数组按字母A-Z排序
+     * @return [type] [description]
+     */
+    public function chartSort($user){
+        foreach ($user as $k => &$v) {
+            $v['chart']=$this->getFirstChart( $v['name_en'] );
+        }
+        $data=[];
+        foreach ($user as $k => $v) {
+            if ( empty( $data[ $v['chart'] ] ) ) {
+                $data[ $v['chart'] ]=[];
+            }
+            $data[ $v['chart'] ][]=$v;
+        }
+        ksort($data);
+        return $data;
+    }
+    /**
+     * 返回取汉字的第一个字的首字母
+     * @param  [type] $str [string]
+     * @return [type]      [strind]
+     */
+    public function getFirstChart($str){
+        if( empty($str) ){
+            return '';
+        }
+        $char=ord($str[0]);
+        if( $char >= ord('A') && $char <= ord('z') ){
+            return strtoupper($str[0]);
+        }
+        $s1=iconv('UTF-8','gb2312',$str);
+        $s2=iconv('gb2312','UTF-8',$s1);
+        $s=$s2==$str?$s1:$str;
+        $asc=ord($s{0})*256+ord($s{1})-65536;
+        if($asc>=-20319&&$asc<=-20284) return 'A';
+        if($asc>=-20283&&$asc<=-19776) return 'B';
+        if($asc>=-19775&&$asc<=-19219) return 'C';
+        if($asc>=-19218&&$asc<=-18711) return 'D';
+        if($asc>=-18710&&$asc<=-18527) return 'E';
+        if($asc>=-18526&&$asc<=-18240) return 'F';
+        if($asc>=-18239&&$asc<=-17923) return 'G';
+        if($asc>=-17922&&$asc<=-17418) return 'H';
+        if($asc>=-17417&&$asc<=-16475) return 'J';
+        if($asc>=-16474&&$asc<=-16213) return 'K';
+        if($asc>=-16212&&$asc<=-15641) return 'L';
+        if($asc>=-15640&&$asc<=-15166) return 'M';
+        if($asc>=-15165&&$asc<=-14923) return 'N';
+        if($asc>=-14922&&$asc<=-14915) return 'O';
+        if($asc>=-14914&&$asc<=-14631) return 'P';
+        if($asc>=-14630&&$asc<=-14150) return 'Q';
+        if($asc>=-14149&&$asc<=-14091) return 'R';
+        if($asc>=-14090&&$asc<=-13319) return 'S';
+        if($asc>=-13318&&$asc<=-12839) return 'T';
+        if($asc>=-12838&&$asc<=-12557) return 'W';
+        if($asc>=-12556&&$asc<=-11848) return 'X';
+        if($asc>=-11847&&$asc<=-11056) return 'Y';
+        if($asc>=-11055&&$asc<=-10247) return 'Z';
+        return null;
+    }
+    /**
+     * 格式化打印函数
+     * @param  [type] $str [description]
+     * @return [type]      [description]
+     */
+    public function p($str){
+        echo '<pre>';
+        print_r($str);
+        echo '</pre>';
+    }
+
+
 }
